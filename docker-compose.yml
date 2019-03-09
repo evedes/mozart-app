@@ -17,7 +17,7 @@ services:
       context: ./mozartbackend
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 3001:3001
     networks:
       - mozart-network
   mozart_mongodb:

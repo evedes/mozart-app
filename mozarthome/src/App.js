@@ -20,9 +20,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        MOZART HOME
-        <br/>
-        renderING { this.state.info }
+        <div className="my-2">
+          <h4>MOZART WEBSERVER</h4>
+        </div>
+        <button className="btn btn-danger"
+          onClick={() => console.log('click click...')}>
+          Click Me!
+        </button>
       </div>
     );
   }

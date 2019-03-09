@@ -7,6 +7,6 @@ FROM node:10-alpine
 WORKDIR /app
 COPY --from=buildbackend /backend/node_modules/ ./
 COPY ./src .
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["npm", "start"]
