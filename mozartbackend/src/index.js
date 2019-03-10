@@ -1,11 +1,43 @@
-const _ = require('lodash');
 const express = require('express')
-const app = express()
+const app = express();
+const mongoose = require('mongoose');
+const _ = require('lodash');
+const os = require('os');
+
 require('dotenv').config();
-var os = require('os');
+require('./models/cpuLoadAvg');
+
+const { PORT, DATABASE } = process.env;
+console.log('DATABASE: ', DATABASE);
+mongoose.connect(DATABASE, {useNewUrlParser: true});
+mongoose.Promise = global.Promise;
+mongoose.connection.on("error", err => {
+  console.error('Problems connecting to mongo');
+})
+
+const cpuLoadAvgModel = require('./models/cpuLoadAvg');
 
 
-const { PORT } = process.env;
+setInterval(function() {
+  const osLoadAvg = os.loadavg();
+  const cpuLoadAvg = new cpuLoadAvgModel({
+  oneMin: osLoadAvg[0],
+  fiveMin: osLoadAvg[1],
+  fifteenMin: osLoadAvg[2],
+  date: Date.now(),
+});
+  cpuLoadAvg.save(function(err) {
+    if (err) return console.err(err);
+    console.log('----- saved cpu load avg data -----');
+  })
+},5000)
+
+app.get('/api/cpuLoadAvg', async (req, res) => {
+  console.log('----- getting cpu load avg data -----');
+  const findAll = cpuLoadAvgModel.find().exec((err, docs) => {
+    res.json(docs);
+  })
+});
 
 app.get('/api/cpu', (req, res) => {
   console.log('---------- CPU Info ----------- ');
