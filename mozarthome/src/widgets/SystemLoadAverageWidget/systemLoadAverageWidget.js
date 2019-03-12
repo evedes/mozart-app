@@ -89,8 +89,9 @@ class SystemLoadAverageWidget extends React.Component {
   }
 
   xAxisTickFormat = (x) => {
+    const hour = new Date(x).getHours();
     const minute = new Date(x).getMinutes();
-    return `${minute}`;
+    return `${hour}:${minute}`;
   }
 
   getYAxisDomain = () => {
