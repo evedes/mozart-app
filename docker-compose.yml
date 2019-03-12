@@ -23,7 +23,7 @@ services:
   mozart_mongodb:
     image: mongo:4.0.5
     restart: unless-stopped
-    container_name: "mozart_mongodb"
+    container_name: mozart_mongodb
     environment:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
@@ -31,7 +31,7 @@ services:
       - ./mongodb/data/db:/data/db
     ports:
       - 27017:27017
-    command: mongod --noauth --bind_ip=0.0.0.0 --smallfiles --oplogSize 128
+    command: mongod --noauth --bind_ip_all --oplogSize 128
     networks:
       - mozart-network     
 networks:
