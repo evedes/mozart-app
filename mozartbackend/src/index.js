@@ -4,16 +4,29 @@ const mongoose = require('mongoose');
 const _ = require('lodash');
 const os = require('os');
 
-require('dotenv').config();
-require('./models/cpuLoadAvg');
+require('dotenv').config({ path: ".env" });
 
 const { PORT, DATABASE } = process.env;
-console.log('DATABASE: ', DATABASE);
-mongoose.connect(DATABASE, {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
+
+const connectWithRetry = () => {
+  console.log('MongoDB connection with retry!');
+  return mongoose.connect(DATABASE);
+}
+
+mongoose.connect(DATABASE);
+
 mongoose.connection.on("error", err => {
-  console.error('Problems connecting to mongo');
+  console.log(`MongoDB Connection Error: ${err}`);
+  setTimeout(connectWithRetry, 5000);
 })
+
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB is Connected!')
+})
+
+
+require('./models/cpuLoadAvg');
 
 const cpuLoadAvgModel = require('./models/cpuLoadAvg');
 
@@ -30,7 +43,7 @@ setInterval(function() {
     if (err) return console.err(err);
     console.log('----- saved cpu load avg data -----');
   })
-},5000)
+},500)
 
 app.get('/api/cpuLoadAvg', async (req, res) => {
   console.log('----- getting cpu load avg data -----');
