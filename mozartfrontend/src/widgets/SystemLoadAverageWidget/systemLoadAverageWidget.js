@@ -112,13 +112,13 @@ class SystemLoadAverageWidget extends React.Component {
     const { cpuLoadAvg } = this.state;
     const chartData1 = _(cpuLoadAvg).map(({date: x, oneMin: y}) => {
       return { x, y }
-    }).slice(-1*40).value();
+    }).slice(-1*20).value();
     const chartData5 = _(cpuLoadAvg).map(({date: x, fiveMin: y}) => {
       return { x, y }
-    }).slice(-1*40).value();
+    }).slice(-1*20).value();
     const chartData15 = _(cpuLoadAvg).map(({date: x, fifteenMin: y}) => {
       return { x, y }
-    }).slice(-1*40).value();
+    }).slice(-1*20).value();
     return { chartData1, chartData5, chartData15 };
   }
 

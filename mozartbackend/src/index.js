@@ -43,7 +43,7 @@ setInterval(function() {
     if (err) return console.err(err);
     console.log('----- saved cpu load avg data -----');
   })
-},500)
+},10 * 1000)
 
 app.get('/api/cpuLoadAvg', async (req, res) => {
   console.log('----- getting cpu load avg data -----');
