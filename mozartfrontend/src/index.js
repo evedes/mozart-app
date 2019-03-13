@@ -6,6 +6,11 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.scss';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faHamburger } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faHamburger);
+
 ReactDOM.render(
   <Router>
     <Routes />
