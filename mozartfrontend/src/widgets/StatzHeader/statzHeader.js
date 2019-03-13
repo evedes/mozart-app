@@ -35,16 +35,23 @@ class StatzHeader extends React.Component{
     return (
       <MozartBox>
         <div>
-          Hostname: { this.state.hostname }
+          <h3>General System Info</h3>
         </div>
         <div>
-          CPU Model: { this.state.cpuModel }
+          <strong>Hostname:</strong>
+          <span className="ml-2">{ this.state.hostname }</span>
         </div>
         <div className="mt-2">
-          Total System Memory: { this.state.totalMem } MB
+          <strong>CPU Model:</strong>
+          <span className="ml-2">{ this.state.cpuModel }</span>
         </div>
-        <div>
-          Free System Memory: { this.state.freeMem } MB
+        <div className="mt-2">
+          <strong>Total System Memory: </strong>
+          <span className="ml-2">{ this.state.totalMem } MB</span>
+        </div>
+        <div className="mt-2">
+          <strong>Free System Memory:</strong>
+          <span className="ml-2">{ this.state.freeMem } MB</span>
         </div>
       </MozartBox>
     )
