@@ -3,17 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.15",
+    "@fortawesome/free-solid-svg-icons": "^5.7.2",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "bootstrap": "^4.3.1",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "node-sass": "^4.11.0",
     "popper.js": "^1.14.7",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1",
+    "react-scripts": "^2.1.8",
     "reactstrap": "^7.1.0",
-    "victory": "^32.0.0"
+    "recharts": "^1.5.0",
+    "tinycolor2": "^1.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,5 +35,6 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "homepage": "./"
+  "homepage": "./",
+  "proxy": "http://localhost:3001"
 }
