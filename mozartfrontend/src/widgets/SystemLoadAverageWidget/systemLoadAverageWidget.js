@@ -1,13 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
-import {
-  VictoryChart,
-  VictoryLine,
-  VictoryAxis,
-} from 'victory';
+import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
-// import MozartMultiLineChart from '../../Components/MozartMultitLineChart';
+import MozartAreaChart from '../../components/MozartAreaChart';
+
+import './SystemLoadAverageWidget.scss';
 
 class SystemLoadAverageWidget extends React.Component {
   state = {
@@ -28,144 +26,51 @@ class SystemLoadAverageWidget extends React.Component {
     return this.setState({ cpuLoadAvg });
   }
 
-  getAxisTickStyle = () => {
-    const xAxisTickStyle = {
-      axis: {
-        stroke: 'black',
-        strokeOpacity: 0.3
-      },
-      ticks: {
-        size: 1,
-        stroke: 'black',
-        strokeOpacity: 0.8
-      },
-      grid: {
-        stroke: 'gray',
-        opacity: 1,
-        strokeWidth: 0.1,
-        strokeDasharray: '30, 5',
-      },
-      tickLabels: {
-        fontSize: '4px',
-        fontFamily: 'inherit',
-        fillOpacity: 1,
-        margin: 0,
-        padding: 0
-      },
-      axisLabel: {
-        fontSize: '8px',
-      }
-    };
-
-    const yAxisTickStyle = {
-      axis: {
-        stroke: 'black',
-        strokeOpacity: 0.3
-      },
-      ticks: {
-        size: 1,
-        stroke: 'black',
-        strokeOpacity: 0.8
-      },
-      grid: {
-        stroke: 'gray',
-        opacity: 1,
-        strokeWidth: 0.1,
-        strokeDasharray: '30, 5',
-      },
-      tickLabels: {
-        fontSize: '4px',
-        fontFamily: 'inherit',
-        fillOpacity: 1,
-        margin: 0,
-        padding: 0
-      },
-      axisLabel: {
-        fontSize: '8px',
-      }
-    };
-
-    return { xAxisTickStyle, yAxisTickStyle };
-  }
-
-  xAxisTickFormat = (x) => {
-    const hour = new Date(x).getHours();
-    const minute = new Date(x).getMinutes();
-    return `${hour}:${minute}`;
-  }
-
-  getYAxisDomain = () => {
-    const {
-      chartData1, chartData5, chartData15
-    } = this.getChartData();
-
-    const yData = _([...chartData1, ...chartData5, ...chartData15])
-      .map(({y}) => y).value();
-
-    return {
-      yAxisMin: _.round(_.min(yData), 0),
-      yAxisMax: _.round(_.max(yData), 0),
-    }
-  }
-
-  getChartData = () => {
-    const { cpuLoadAvg } = this.state;
-    const chartData1 = _(cpuLoadAvg).map(({date: x, oneMin: y}) => {
-      return { x, y }
-    }).slice(-1*20).value();
-    const chartData5 = _(cpuLoadAvg).map(({date: x, fiveMin: y}) => {
-      return { x, y }
-    }).slice(-1*20).value();
-    const chartData15 = _(cpuLoadAvg).map(({date: x, fifteenMin: y}) => {
-      return { x, y }
-    }).slice(-1*20).value();
-    return { chartData1, chartData5, chartData15 };
-  }
-
-
   renderSystemLoadAverage = () => {
-    const { height, width } = this.props;
-    const {
-      chartData1, chartData5, chartData15,
-    } = this.getChartData();
+    const { height } = this.props;
+    const { cpuLoadAvg } = this.state;
+    
+    const chartData = _.slice(cpuLoadAvg, -1000).map(item => {
+      return {
+        ...item,
+        date: moment(item.date).format("HH:mm:ss"),
+      };
+    });
 
-    const {
-      xAxisTickStyle, yAxisTickStyle,
-    } = this.getAxisTickStyle();
-
+    console.log('chartData: ', chartData);
+    
     return (
+      !_.isNil(chartData)
+      && (
+        <div>
       <MozartBox>
-        <VictoryChart
+        <MozartAreaChart
           height={height}
-          width={width}>
-          <VictoryLine
-            data={chartData1}
-            style={{
-              data: { fill: 'yellow', stroke: 'orange', strokeWidth: 0.5 },
-            }}
-          />
-          <VictoryLine
-            data={chartData5}
-            style={{
-              data: { fill: 'orange', stroke: 'orange', strokeWidth: 0.8  },
-            }}
-          />
-          <VictoryLine
-            data={chartData15}
-            style={{
-              data: { fill: 'red', stroke: 'red', strokeWidth: 1.5  },
-            }}
-          />
-          <VictoryAxis
-            label="system load avg"
-            dependentAxis={true}
-            style={yAxisTickStyle} />
-          <VictoryAxis
-            label="time (minute)"
-            tickFormat={this.xAxisTickFormat}
-            style={xAxisTickStyle} />
-        </VictoryChart>
+          data={chartData}
+          xKey="date" />
       </MozartBox>
+      <MozartBox>
+        <MozartAreaChart
+          height={height}
+          data={chartData}
+          colors={['#0F447A', '#3B5B77', '#4A7E87']}
+          xKey="date" />
+      </MozartBox>
+      <MozartBox>
+        <MozartAreaChart
+          height={height}
+          data={chartData}
+          xKey="date" />
+      </MozartBox>
+      <MozartBox>
+        <MozartAreaChart
+          height={height}
+          data={chartData}
+          colors={['#0F447A', '#3B5B77', '#4A7E87']}
+          xKey="date" />
+      </MozartBox>
+      </div>
+      )
     );
   }
 
