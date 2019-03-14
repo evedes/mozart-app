@@ -4,7 +4,7 @@ import NoMatch from './views/NoMatch';
 import MozartHeader from './components/MozartHeader';
 import { Switch, Route } from 'react-router-dom';
 
-export const Routes = () => {
+const Routes = () => {
   return (
     <div>
       <MozartHeader />
@@ -15,3 +15,5 @@ export const Routes = () => {
     </div>
   )
 }
+
+export default Routes;
