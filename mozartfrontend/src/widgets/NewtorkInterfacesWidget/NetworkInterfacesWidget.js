@@ -1,47 +1,52 @@
 import React from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
 
 import './NetworkInterfacesWidget.scss';
+import MozartAreaChart from '../../components/MozartAreaChart';
 
 
 class NetworkInterfacesWidget extends React.Component{
   state = {
-    networkInterfaces: null,
-  }
-  
-  componentDidMount() {
-    this.fetchSysInfo();
+    networkStatz: null,
   }
 
-  fetchSysInfo = async () => {
-    const sysInfo = await fetch('/api/cpu', {
+  componentDidMount() {
+    this.fetchNetworkStatz();
+  }
+
+  fetchNetworkStatz = async () => {
+    const networkStatz = await fetch('/api/networkStatz', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
       }
-    })
-      .then(res => res.json())
-
-    return this.setState({
-      networkInterfaces: sysInfo.network_interfaces,
-    });
-  }
-  renderNetworkInterfaces = () => {
-    const { networkInterfaces } = this.state;
-    return _(networkInterfaces).map((interfaceData, interfaceId) => {
-      return (
-        <span key={_.uniqueId('interface-')} className="text-danger">{ interfaceId }{" "}</span>
-      );
-    }).value();
+    }).then(res => res.json())
+    return this.setState({ networkStatz });
   }
 
   render() {
+    const { height } = this.props;
+    const { networkStatz } = this.state;
+
+    const chartData = _.slice(networkStatz, -3500).map(item => {
+      const { rx_sec, tx_sec } = item;
+      return {
+        rx_sec,
+        tx_sec,
+        date: moment(item.date).format("HH:mm:ss"),
+      };
+    });
+
     return (
       <MozartBox>
-        <h3>Network Interfaces</h3>
-        { this.renderNetworkInterfaces() }
+        <MozartAreaChart
+          height={height}
+          data={chartData}
+          xKey="date"
+        />
       </MozartBox>
     )
   }
