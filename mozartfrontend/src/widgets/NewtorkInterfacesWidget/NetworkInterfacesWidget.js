@@ -1,6 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
+
 import MozartBox from '../../components/MozartBox';
+
+import './NetworkInterfacesWidget.scss';
+
 
 class NetworkInterfacesWidget extends React.Component{
   state = {
