@@ -43,12 +43,20 @@ setInterval(function() {
     if (err) return console.err(err);
     console.log('----- saved cpu load avg data -----');
   })
-},10 * 1000)
+}, 1000)
 
 app.get('/api/cpuLoadAvg', async (req, res) => {
-  console.log('----- getting cpu load avg data -----');
   const findAll = cpuLoadAvgModel.find().exec((err, docs) => {
-    res.json(docs);
+    const averageLoads = _(docs).map(doc => {
+      const { oneMin, fiveMin, fifteenMin, date } = doc;
+      return {
+        oneMin: _.round(_.toNumber(oneMin), 3),
+        fiveMin: _.round(_.toNumber(fiveMin), 3),
+        fifteenMin: _.round(_.toNumber(fifteenMin), 3),
+        date,
+      }
+    }).value();
+    res.json(averageLoads);
   })
 });
 
