@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const os = require('os');
+const si = require('systeminformation');
+
 
 require('dotenv').config({ path: ".env" });
 
@@ -29,9 +31,10 @@ mongoose.connection.on('connected', () => {
 require('./models/cpuLoadAvg');
 
 const cpuLoadAvgModel = require('./models/cpuLoadAvg');
+const networkStatzModel = require('./models/networkStatz');
 
 
-setInterval(function() {
+setInterval(() => {
   const osLoadAvg = os.loadavg();
   const cpuLoadAvg = new cpuLoadAvgModel({
   oneMin: osLoadAvg[0],
@@ -60,8 +63,34 @@ app.get('/api/cpuLoadAvg', async (req, res) => {
   })
 });
 
+setInterval(() => {
+  si.networkStats().then(data => {
+    const networkStatz = new networkStatzModel({
+      ...data[0],
+      date: Date.now(),
+    });
+    networkStatz.save(function(err) {
+      if (err) return console.err(err);
+    })
+  })
+}, 1000)
+
+app.get('/api/networkStatz', async (req, res) => {
+  const findAll = networkStatzModel.find().exec((err, docs) => {
+    const networkStatz = _(docs).map(doc => {
+      const { rx_sec, tx_sec, iface, date } = doc;
+      return {
+        rx_sec: - rx_sec / 1024,
+        tx_sec: tx_sec / 1024,
+        iface,
+        date,
+      }
+    }).value();
+    res.json(networkStatz);
+  })
+});
+
 app.get('/api/cpu', (req, res) => {
-  console.log('---------- CPU Info ----------- ');
   const sysinfo = {
     cpu_model: os.cpus()[0].model,
     logical_cpus: _.size(os.cpus()),
