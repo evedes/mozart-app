@@ -1,5 +1,8 @@
 import React from 'react';
+
 import MozartBox from '../../components/MozartBox';
+
+import './StatzHeader.scss';
 
 class StatzHeader extends React.Component{
   state = {
@@ -33,27 +36,29 @@ class StatzHeader extends React.Component{
 
   render() {
     return (
-      <MozartBox>
-        <div>
-          <h3>General System Info</h3>
-        </div>
-        <div>
-          <strong>Hostname:</strong>
-          <span className="ml-2">{ this.state.hostname }</span>
-        </div>
-        <div className="mt-2">
-          <strong>CPU Model:</strong>
-          <span className="ml-2">{ this.state.cpuModel }</span>
-        </div>
-        <div className="mt-2">
-          <strong>Total System Memory: </strong>
-          <span className="ml-2">{ this.state.totalMem } MB</span>
-        </div>
-        <div className="mt-2">
-          <strong>Free System Memory:</strong>
-          <span className="ml-2">{ this.state.freeMem } MB</span>
-        </div>
-      </MozartBox>
+      <div className="StatzHeader">
+        <MozartBox>
+          <div>
+            <h3>General System Info</h3>
+          </div>
+          <div>
+            <strong>Hostname:</strong>
+            <span className="ml-2">{ this.state.hostname }</span>
+          </div>
+          <div className="mt-2">
+            <strong>CPU Model:</strong>
+            <span className="ml-2">{ this.state.cpuModel }</span>
+          </div>
+          <div className="mt-2">
+            <strong>Total System Memory: </strong>
+            <span className="ml-2">{ this.state.totalMem } MB</span>
+          </div>
+          <div className="mt-2">
+            <strong>Free System Memory:</strong>
+            <span className="ml-2">{ this.state.freeMem } MB</span>
+          </div>
+        </MozartBox>
+      </div>
     )
   }
 }

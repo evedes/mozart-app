@@ -1,3 +1,3 @@
-import { default as StatzHeader } from './statzHeader';
+import { default as StatzHeader } from './StatzHeader';
 
 export default StatzHeader;
