@@ -1,7 +1,11 @@
 .MozartHeader {
   height: 65px;
-  background-color: black;
+  background-color: #1A1B1D;
   color: white;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 30px;
+  font-family: Roboto, sans-serif;
+  font-size: 45px;
+  position: fixed;
+  width: 100%;
+  margin: auto;
+  z-index: 1;
 }
