@@ -74,10 +74,10 @@ class MozartAreaChart extends React.Component {
           <XAxis
             dataKey={xKey}
             tickFormatter={(tickValue) => this.formatTick(tickValue)}
-            interval={30}
+            interval={60}
             stroke={this.getAxisColor()}
             tickSize={3} />
-          <YAxis type="number" stroke={this.getAxisColor()} domain={['dataMin - .3', 'dataMax + .5']}/>
+          <YAxis type="number" stroke={this.getAxisColor()} />
           <CartesianGrid stroke={this.getGridColor()} />
           <Tooltip
             cursor={{ stroke: 'red' }}
