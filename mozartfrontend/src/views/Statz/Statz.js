@@ -11,6 +11,7 @@ class Statz extends Component {
         <StatzHeader />
         <NetworkInterfacesWidget height={250} width={300}/>
         <SystemLoadAverageWidget height={250} />
+        <NetworkInterfacesWidget height={250} width={300}/>
         <SystemLoadAverageWidget height={250} />
       </div>
     );
