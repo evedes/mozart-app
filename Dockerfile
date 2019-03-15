@@ -1,10 +1,9 @@
 FROM node:10 as mozartfrontend
 WORKDIR /usr/src/mozartfrontend
-COPY ./mozartfrontend/package.json ./
-COPY ./mozartfrontend/yarn.lock ./
-RUN yarn
+COPY ./mozartfrontend/package*.json ./
+RUN npm ci
 COPY ./mozartfrontend ./
-RUN yarn build
+RUN npm run build
 
 FROM nginx:1.14
 COPY --from=mozartfrontend /usr/src/mozartfrontend/build/ /usr/share/nginx/html/
