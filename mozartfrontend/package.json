@@ -36,5 +36,4 @@
     "not op_mini all"
   ],
   "homepage": "./",
-  "proxy": "http://localhost:3001"
 }
