@@ -12,6 +12,7 @@ import {
   YAxis
 } from 'recharts';
 
+import MozartChartHeader from '../MozartChartHeader';
 import { colors } from './constants';
 
 import './MozartAreaChart.scss';
@@ -44,21 +45,19 @@ class MozartAreaChart extends React.Component {
   }
 
   formatTick = (tickValue) => {
-    const tick = _.toNumber(_.slice(tickValue, -2).join(''));
-    if (tick % 10 === 0) {
-      return _.slice(tickValue, 0, 5).join('');
-    };
-    return '';
+    return tickValue;
   }
 
   render() {
-    const { data, height, colors, xKey } = this.props;
+    const { data, height, colors, xKey, title } = this.props;
     const yKeys = this.getLineKeys();
     return (
+      <>
+      <MozartChartHeader title={title} />
       <ResponsiveContainer width="100%" height={height}>
         <AreaChart
-          className="MozartLineChart"
           data={data}
+          className="MozartAreaChart"
           margin={{ top: 10, right: 10, left: -25, bottom: -10 }}>
         {
           _(yKeys).map((lineKey, i) => {
@@ -74,7 +73,7 @@ class MozartAreaChart extends React.Component {
           <XAxis
             dataKey={xKey}
             tickFormatter={(tickValue) => this.formatTick(tickValue)}
-            interval={60}
+            interval={600}
             stroke={this.getAxisColor()}
             tickSize={3} />
           <YAxis type="number" stroke={this.getAxisColor()} />
@@ -84,6 +83,7 @@ class MozartAreaChart extends React.Component {
             contentStyle={{ backgroundColor: '#161719', border: this.getGridColor() }} />
         </AreaChart>
       </ResponsiveContainer>
+      </>
     )
   }
 }
