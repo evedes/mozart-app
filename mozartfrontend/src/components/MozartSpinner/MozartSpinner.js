@@ -8,7 +8,6 @@ class MozartSpinner extends React.Component {
     return (
       <MozartBox style={{ color: 'red' }}>
         <FontAwesomeIcon icon="spinner" spin />
-        <span className="ml-2">Loading...</span>
       </MozartBox>
     );
   }
