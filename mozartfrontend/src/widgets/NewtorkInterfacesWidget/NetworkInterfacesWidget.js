@@ -43,6 +43,7 @@ class NetworkInterfacesWidget extends React.Component{
     return (
       <MozartBox>
         <MozartAreaChart
+          title="Network Interface Widget - RX/TX (bytes)"
           height={height}
           data={chartData}
           xKey="date"

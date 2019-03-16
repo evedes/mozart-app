@@ -41,8 +41,9 @@ class SystemLoadAverageWidget extends React.Component {
       !_.isNil(chartData)
       && <MozartBox>
         <MozartAreaChart
-          height={height}
+          title="System Load Average (1 min, 5 min, 15 min)"
           data={chartData}
+          height={height}
           xKey="date" />
       </MozartBox>
     );
