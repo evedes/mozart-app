@@ -1,4 +1,13 @@
 .MozartChartHeader {
   font-family: Roboto, sans-serif;
   font-size: 11px;
+  color: rgba(149, 149, 150, 0.8);
+  height: 30px;
+  margin-right: 5px;
+
+  &:hover {
+    transition: all 0.25s ease-in-out;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 }

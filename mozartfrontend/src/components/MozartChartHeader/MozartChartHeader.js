@@ -1,21 +1,48 @@
 import React from 'react';
-import { string } from 'prop-types';
-import _ from 'lodash';
-import tinycolor from 'tinycolor2';
-
+import { string, bool } from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './MozartChartHeader.scss';
 
 class MozartChartHeader extends React.Component {
-  getTitleColor = color => _.toString(tinycolor(color).setAlpha(0.5));
+  state = {
+    isDropDownVisible: false,
+  };
+
+  onMouseOver = () => {
+    this.setState({
+      isDropDownVisible: true,
+    });
+  };
+
+  onMouseLeave = () => {
+    this.setState({
+      isDropDownVisible: false,
+    });
+  };
+
+  renderDropDownButton = () => (
+    <span className="position-absolute">
+      <FontAwesomeIcon className="ml-2" icon="caret-down" />
+    </span>
+  );
 
   render() {
-    const { title } = this.props;
+    const { title, isChartHovered } = this.props;
+    const { isDropDownVisible } = this.state;
+
     return (
       <div
-        className="MozartChartHeader d-flex justify-content-center"
-        style={{ color: this.getTitleColor('white') }}
+        className="MozartChartHeader d-flex justify-content-center align-items-center"
+        onFocus={() => {}}
+        onMouseLeave={this.onMouseLeave}
+        onMouseOver={this.onMouseOver}
       >
-        {title}
+        <span>
+          {title}
+          {isDropDownVisible || isChartHovered
+            ? this.renderDropDownButton()
+            : null}
+        </span>
       </div>
     );
   }
@@ -23,6 +50,7 @@ class MozartChartHeader extends React.Component {
 
 MozartChartHeader.propTypes = {
   title: string,
+  isChartHovered: bool,
 };
 
 export default MozartChartHeader;
