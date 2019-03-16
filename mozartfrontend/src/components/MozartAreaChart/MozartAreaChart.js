@@ -24,6 +24,20 @@ class MozartAreaChart extends React.Component {
     colors: defaultColors,
   };
 
+  state = {
+    isChartHovered: false,
+  };
+
+  onMouseHover = () =>
+    this.setState({
+      isChartHovered: true,
+    });
+
+  onMouseLeave = () =>
+    this.setState({
+      isChartHovered: false,
+    });
+
   getLineKeys = () => {
     const { data, xKey } = this.props;
     return _.keysIn(_.first(data)).filter(key => key !== xKey);
@@ -41,16 +55,22 @@ class MozartAreaChart extends React.Component {
 
   render() {
     const { data, height, colors, xKey, title } = this.props;
+    const { isChartHovered } = this.state;
+
     const yKeys = this.getLineKeys();
 
     return (
       <>
-        <MozartChartHeader title={title} />
+        <MozartChartHeader title={title} isChartHovered={isChartHovered} />
         <ResponsiveContainer width="100%" height={height}>
           <AreaChart
+            style={{ cursor: 'crosshair' }}
             data={data}
             className="MozartAreaChart"
-            margin={{ top: 10, right: 10, left: -25, bottom: -10 }}
+            margin={{ top: 10, right: 5, left: -25, bottom: -10 }}
+            onMouseOver={this.onMouseHover}
+            onMouseLeave={this.onMouseLeave}
+            onFocus={() => {}}
           >
             {_(yKeys)
               .map((lineKey, i) => (
