@@ -12,7 +12,7 @@ const networkStatzModel = require('../models/networkStatz');
 router.get('/cpuLoadAvg', async (req, res) => {
   const endDate = moment().startOf('minute');
   const startDate = moment()
-    .subtract(60, 'minutes')
+    .subtract(10, 'minutes')
     .startOf('minute');
 
   await cpuLoadAvgModel
@@ -41,7 +41,7 @@ router.get('/cpuLoadAvg', async (req, res) => {
 router.get('/networkStatz', async (req, res) => {
   const endDate = moment().startOf('minute');
   const startDate = moment()
-    .subtract(60, 'minutes')
+    .subtract(10, 'minutes')
     .startOf('minute');
 
   await networkStatzModel
