@@ -13,10 +13,10 @@ mongoose.Promise = global.Promise;
 
 const connectWithRetry = () => {
   console.log('MongoDB connection with retry!');
-  return mongoose.connect(DATABASE);
+  return mongoose.connect(DATABASE, { useNewUrlParser: true });
 }
 
-mongoose.connect(DATABASE);
+mongoose.connect(DATABASE, { useNewUrlParser: true });
 
 mongoose.connection.on("error", err => {
   console.log(`MongoDB Connection Error: ${err}`);
