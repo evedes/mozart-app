@@ -7,4 +7,4 @@ const cpuLoadAvgSchema = new mongoose.Schema({
   "date": Date,
 });
 
-module.exports = mongoose.model('cpuLoadAvg', cpuLoadAvgSchema);
+module.exports = mongoose.model('CPULoadAvg', cpuLoadAvgSchema);
