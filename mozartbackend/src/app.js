@@ -1,37 +1,12 @@
 const express = require('express')
 const app = express();
-const mongoose = require('mongoose');
+
 const _ = require('lodash');
 const os = require('os');
 const si = require('systeminformation');
 
-
-require('dotenv').config({ path: ".env" });
-
-const { PORT, DATABASE } = process.env;
-mongoose.Promise = global.Promise;
-
-const connectWithRetry = () => {
-  console.log('MongoDB connection with retry!');
-  return mongoose.connect(DATABASE, { useNewUrlParser: true });
-}
-
-mongoose.connect(DATABASE, { useNewUrlParser: true });
-
-mongoose.connection.on("error", err => {
-  console.log(`MongoDB Connection Error: ${err}`);
-  setTimeout(connectWithRetry, 5000);
-})
-
-mongoose.connection.on('connected', () => {
-  console.log('MongoDB is Connected!')
-})
-
-
-require('./models/cpuLoadAvg');
-
-const cpuLoadAvgModel = require('./models/cpuLoadAvg');
-const networkStatzModel = require('./models/networkStatz');
+const cpuLoadAvgModel = require('./models/CPULoadAvg');
+const networkStatzModel = require('./models/NetworkStatz');
 
 
 setInterval(() => {
@@ -44,7 +19,6 @@ setInterval(() => {
 });
   cpuLoadAvg.save(function(err) {
     if (err) return console.err(err);
-    console.log('----- saved cpu load avg data -----');
   })
 }, 1000)
 
@@ -103,4 +77,4 @@ app.get('/api/cpu', (req, res) => {
   res.json(sysinfo);
 });
 
-app.listen(PORT, () => console.log(`mozart_backend API listening on PORT ${PORT}!`))
+module.exports = app;
