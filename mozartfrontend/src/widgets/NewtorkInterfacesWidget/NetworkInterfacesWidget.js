@@ -1,4 +1,5 @@
 import React from 'react';
+import { number } from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -7,38 +8,43 @@ import MozartBox from '../../components/MozartBox';
 import './NetworkInterfacesWidget.scss';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
-
-class NetworkInterfacesWidget extends React.Component{
+class NetworkInterfacesWidget extends React.Component {
   state = {
     networkStatz: null,
-  }
+  };
 
   componentDidMount() {
     this.fetchNetworkStatz();
   }
 
   fetchNetworkStatz = async () => {
-    const networkStatz = await fetch('/api/networkStatz', {
+    const networkStatz = await fetch('/networkStatz', {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
-      }
-    }).then(res => res.json())
+        Accept: 'application/json',
+      },
+    }).then(res => res.json());
     return this.setState({ networkStatz });
-  }
+  };
 
   render() {
     const { height } = this.props;
     const { networkStatz } = this.state;
 
-    const chartData = _.slice(networkStatz, -3500).map(item => {
-      const { rx_sec, tx_sec } = item;
-      return {
-        rx_sec,
-        tx_sec,
-        date: moment(item.date).format("HH:mm:ss"),
-      };
-    });
+    if (!networkStatz) {
+      return <div>Loading...</div>;
+    }
+
+    const chartData = _(networkStatz)
+      .map(item => {
+        const { rx_sec: rxSec, tx_sec: txSec, date } = item;
+        return {
+          rxSec,
+          txSec,
+          date: moment(date).format('HH:mm:ss'),
+        };
+      })
+      .value();
 
     return (
       <MozartBox>
@@ -49,8 +55,12 @@ class NetworkInterfacesWidget extends React.Component{
           xKey="date"
         />
       </MozartBox>
-    )
+    );
   }
 }
+
+NetworkInterfacesWidget.propTypes = {
+  height: number,
+};
 
 export default NetworkInterfacesWidget;

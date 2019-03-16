@@ -1,3 +1,3 @@
-import { default as MozartAreaChart } from './MozartAreaChart';
+import MozartAreaChart from './MozartAreaChart';
 
 export default MozartAreaChart;

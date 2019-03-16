@@ -1,3 +1,3 @@
-import { default as Statz } from './Statz';
+import Statz from './Statz';
 
 export default Statz;

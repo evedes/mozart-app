@@ -1,1 +1,1 @@
-export const colors = ['red', 'orange', 'yellow', 'green'];
+export const defaultColors = ['red', 'orange', 'yellow', 'green'];

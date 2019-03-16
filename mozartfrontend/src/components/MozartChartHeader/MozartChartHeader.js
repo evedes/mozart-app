@@ -1,4 +1,5 @@
 import React from 'react';
+import { string } from 'prop-types';
 import _ from 'lodash';
 import tinycolor from 'tinycolor2';
 
@@ -10,12 +11,18 @@ class MozartChartHeader extends React.Component {
   render() {
     const { title } = this.props;
     return (
-      <div className="MozartChartHeader d-flex justify-content-center"
-        style={{ color: this.getTitleColor('white') }}>
+      <div
+        className="MozartChartHeader d-flex justify-content-center"
+        style={{ color: this.getTitleColor('white') }}
+      >
         {title}
       </div>
     );
   }
 }
+
+MozartChartHeader.propTypes = {
+  title: string,
+};
 
 export default MozartChartHeader;

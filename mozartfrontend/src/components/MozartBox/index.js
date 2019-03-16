@@ -1,3 +1,3 @@
-import { default as MozartBox } from './MozartBox';
+import MozartBox from './MozartBox';
 
 export default MozartBox;

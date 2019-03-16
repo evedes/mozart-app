@@ -1,3 +1,3 @@
-import { default as SystemLoadAverageWidget } from './SystemLoadAverageWidget';
+import SystemLoadAverageWidget from './SystemLoadAverageWidget';
 
 export default SystemLoadAverageWidget;

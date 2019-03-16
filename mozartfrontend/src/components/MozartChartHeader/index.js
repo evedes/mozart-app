@@ -1,3 +1,3 @@
-import { default as MozartChartHeader } from './MozartChartHeader';
+import MozartChartHeader from './MozartChartHeader';
 
 export default MozartChartHeader;

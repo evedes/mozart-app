@@ -9,9 +9,9 @@ class Statz extends Component {
     return (
       <div className="Statz">
         <StatzHeader />
-        <NetworkInterfacesWidget height={250} width={300}/>
+        <NetworkInterfacesWidget height={250} width={300} />
         <SystemLoadAverageWidget height={250} />
-        <NetworkInterfacesWidget height={250} width={300}/>
+        <NetworkInterfacesWidget height={250} width={300} />
         <SystemLoadAverageWidget height={250} />
       </div>
     );

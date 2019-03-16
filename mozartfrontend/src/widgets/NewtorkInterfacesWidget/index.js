@@ -1,3 +1,3 @@
-import { default as NetworkInterfacesWidget } from './NetworkInterfacesWidget';
+import NetworkInterfacesWidget from './NetworkInterfacesWidget';
 
 export default NetworkInterfacesWidget;

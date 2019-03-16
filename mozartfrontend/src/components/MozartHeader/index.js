@@ -1,3 +1,3 @@
-import { default as MozartHeader } from './MozartHeader';
+import MozartHeader from './MozartHeader';
 
 export default MozartHeader;
