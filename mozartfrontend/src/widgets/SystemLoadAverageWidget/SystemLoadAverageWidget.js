@@ -4,6 +4,7 @@ import { number } from 'prop-types';
 import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
+import MozartSpinner from '../../components/MozartSpinner';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
 import './SystemLoadAverageWidget.scss';
@@ -32,7 +33,7 @@ class SystemLoadAverageWidget extends React.Component {
     const { cpuLoadAvg } = this.state;
 
     if (!cpuLoadAvg) {
-      return <div>Loading...</div>;
+      return <MozartSpinner />;
     }
 
     const chartData = _(cpuLoadAvg)
@@ -43,16 +44,14 @@ class SystemLoadAverageWidget extends React.Component {
       .value();
 
     return (
-      !_.isNil(chartData) && (
-        <MozartBox>
-          <MozartAreaChart
-            title="System Load Average (1 min, 5 min, 15 min)"
-            data={chartData}
-            height={height}
-            xKey="date"
-          />
-        </MozartBox>
-      )
+      <MozartBox>
+        <MozartAreaChart
+          title="System Load Average (1 min, 5 min, 15 min)"
+          data={chartData}
+          height={height}
+          xKey="date"
+        />
+      </MozartBox>
     );
   };
 

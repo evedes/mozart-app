@@ -4,9 +4,10 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
+import MozartSpinner from '../../components/MozartSpinner';
+import MozartAreaChart from '../../components/MozartAreaChart';
 
 import './NetworkInterfacesWidget.scss';
-import MozartAreaChart from '../../components/MozartAreaChart';
 
 class NetworkInterfacesWidget extends React.Component {
   state = {
@@ -32,7 +33,7 @@ class NetworkInterfacesWidget extends React.Component {
     const { networkStatz } = this.state;
 
     if (!networkStatz) {
-      return <div>Loading...</div>;
+      return <MozartSpinner />;
     }
 
     const chartData = _(networkStatz)
