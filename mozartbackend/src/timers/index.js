@@ -18,7 +18,7 @@ setInterval(() => {
   cpuLoadAvg.save(function(err) {
     if (err) return console.err(err);
   });
-}, 500);
+}, 1000);
 
 // MEASURE NETWORK STATS
 
@@ -32,4 +32,4 @@ setInterval(() => {
       if (err) return console.err(err);
     });
   });
-}, 500);
+}, 1000);
