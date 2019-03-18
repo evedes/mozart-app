@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { number } from 'prop-types';
 import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
@@ -28,8 +27,7 @@ class SystemLoadAverageWidget extends React.Component {
     return this.setState({ cpuLoadAvg });
   };
 
-  renderSystemLoadAverage = () => {
-    const { height } = this.props;
+  render() {
     const { cpuLoadAvg } = this.state;
 
     if (!cpuLoadAvg) {
@@ -42,26 +40,16 @@ class SystemLoadAverageWidget extends React.Component {
         date: moment(item.date).format('HH:mm:ss'),
       }))
       .value();
-
     return (
       <MozartBox>
         <MozartAreaChart
           title="System Load Average (1 min, 5 min, 15 min)"
           data={chartData}
-          height={height}
           xKey="date"
         />
       </MozartBox>
     );
-  };
-
-  render() {
-    return <div>{this.renderSystemLoadAverage()}</div>;
   }
 }
-
-SystemLoadAverageWidget.propTypes = {
-  height: number,
-};
 
 export default SystemLoadAverageWidget;

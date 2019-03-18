@@ -1,5 +1,4 @@
 import React from 'react';
-import { number } from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -29,7 +28,6 @@ class NetworkInterfacesWidget extends React.Component {
   };
 
   render() {
-    const { height } = this.props;
     const { networkStatz } = this.state;
 
     if (!networkStatz) {
@@ -51,7 +49,6 @@ class NetworkInterfacesWidget extends React.Component {
       <MozartBox>
         <MozartAreaChart
           title="Network Interface Widget - RX/TX (bytes)"
-          height={height}
           data={chartData}
           xKey="date"
         />
@@ -59,9 +56,5 @@ class NetworkInterfacesWidget extends React.Component {
     );
   }
 }
-
-NetworkInterfacesWidget.propTypes = {
-  height: number,
-};
 
 export default NetworkInterfacesWidget;
