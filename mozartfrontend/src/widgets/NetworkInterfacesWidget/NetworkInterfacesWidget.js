@@ -18,7 +18,7 @@ class NetworkInterfacesWidget extends React.Component {
   }
 
   fetchNetworkStatz = async () => {
-    const networkStatz = await fetch('/api/networkStatz', {
+    const networkStatz = await fetch('api/networkStatz', {
       method: 'GET',
       headers: {
         Accept: 'application/json',

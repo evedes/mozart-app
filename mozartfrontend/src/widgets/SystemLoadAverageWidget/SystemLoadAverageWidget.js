@@ -18,7 +18,7 @@ class SystemLoadAverageWidget extends React.Component {
   }
 
   fetchSystemLoadAvg = async () => {
-    const cpuLoadAvg = await fetch('/api/cpuLoadAvg', {
+    const cpuLoadAvg = await fetch('api/cpuLoadAvg', {
       method: 'GET',
       headers: {
         Accept: 'application/json',

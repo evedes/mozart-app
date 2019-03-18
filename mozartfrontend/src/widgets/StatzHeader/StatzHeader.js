@@ -15,7 +15,7 @@ class StatzHeader extends React.Component {
   }
 
   fetchSysInfo = async () => {
-    const sysInfo = await fetch('/api/cpuInfo', {
+    const sysInfo = await fetch('api/cpuInfo', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
