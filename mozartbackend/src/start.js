@@ -6,10 +6,8 @@ const { PORT, DATABASE } = process.env;
 // MONGOOSE CONNECTION TO MONGO
 mongoose.Promise = global.Promise;
 
-const connectWithRetry = () => {
-  console.log('MongoDB connection with retry!');
-  return mongoose.connect(DATABASE, { useNewUrlParser: true });
-};
+const connectWithRetry = () =>
+  mongoose.connect(DATABASE, { useNewUrlParser: true });
 
 mongoose.connect(DATABASE, { useNewUrlParser: true });
 
@@ -28,7 +26,7 @@ mongoose.connection.on('connected', () => {
 
 const app = require('./app');
 
-app.set('port', PORT || 3001);
+app.set('port', PORT);
 
 app.listen(app.get('port'), () => {
   console.log('--------------------------------------------------');
