@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import { array, string, number } from 'prop-types';
+import { array, string } from 'prop-types';
 import tinycolor from 'tinycolor2';
 
 import {
@@ -15,6 +15,8 @@ import {
 } from 'recharts';
 
 import MozartChartHeader from '../MozartChartHeader';
+import MozartChartContainer from '../MozartChartContainer';
+
 import { defaultColors } from './constants';
 
 import './MozartAreaChart.scss';
@@ -53,16 +55,18 @@ class MozartAreaChart extends React.Component {
 
   tickFormat = tick => moment(tick).format('HH:mm:ss');
 
-  render() {
-    const { data, height, colors, xKey, title } = this.props;
+  Header = () => {
+    const { title } = this.props;
     const { isChartHovered } = this.state;
+    return <MozartChartHeader title={title} isChartHovered={isChartHovered} />;
+  };
 
+  Chart = () => {
+    const { data, colors, xKey } = this.props;
     const yKeys = this.getLineKeys();
-
     return (
       <>
-        <MozartChartHeader title={title} isChartHovered={isChartHovered} />
-        <ResponsiveContainer width="100%" height={height}>
+        <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             style={{ cursor: 'crosshair' }}
             data={data}
@@ -103,13 +107,22 @@ class MozartAreaChart extends React.Component {
         </ResponsiveContainer>
       </>
     );
+  };
+
+  render() {
+    return (
+      <MozartChartContainer
+        headerHeight="30px"
+        Chart={this.Chart}
+        Header={this.Header}
+      />
+    );
   }
 }
 
 MozartAreaChart.propTypes = {
   data: array,
   colors: array,
-  height: number,
   title: string,
   xKey: string,
 };

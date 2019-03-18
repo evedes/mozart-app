@@ -21,7 +21,7 @@ class MozartChartHeader extends React.Component {
   };
 
   renderDropDownButton = () => (
-    <span className="position-absolute">
+    <span className="caret-down">
       <FontAwesomeIcon className="ml-2" icon="caret-down" />
     </span>
   );

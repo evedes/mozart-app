@@ -5,6 +5,11 @@
   height: 30px;
   margin-right: 5px;
 
+  .caret-down {
+    position: absolute;
+    cursor: pointer;
+  }
+
   &:hover {
     transition: all 0.25s ease-in-out;
     color: rgba(255, 255, 255, 0.7);
