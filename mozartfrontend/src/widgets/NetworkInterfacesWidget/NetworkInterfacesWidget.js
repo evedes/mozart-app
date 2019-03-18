@@ -1,16 +1,16 @@
-import React from "react";
-import _ from "lodash";
-import moment from "moment";
+import React from 'react';
+import _ from 'lodash';
+import moment from 'moment';
 
-import MozartBox from "../../components/MozartBox";
-import MozartSpinner from "../../components/MozartSpinner";
-import MozartAreaChart from "../../components/MozartAreaChart";
+import MozartBox from '../../components/MozartBox';
+import MozartSpinner from '../../components/MozartSpinner';
+import MozartAreaChart from '../../components/MozartAreaChart';
 
-import "./NetworkInterfacesWidget.scss";
+import './NetworkInterfacesWidget.scss';
 
 class NetworkInterfacesWidget extends React.Component {
   state = {
-    networkStatz: null
+    networkStatz: null,
   };
 
   componentDidMount() {
@@ -18,11 +18,11 @@ class NetworkInterfacesWidget extends React.Component {
   }
 
   fetchNetworkStatz = async () => {
-    const networkStatz = await fetch("/api/networkStatz", {
-      method: "GET",
+    const networkStatz = await fetch('/api/networkStatz', {
+      method: 'GET',
       headers: {
-        Accept: "application/json"
-      }
+        Accept: 'application/json',
+      },
     }).then(res => res.json());
     return this.setState({ networkStatz });
   };
@@ -40,7 +40,7 @@ class NetworkInterfacesWidget extends React.Component {
         return {
           rxSec,
           txSec,
-          date: moment(date).format("HH:mm:ss")
+          date: moment(date).format('HH:mm:ss'),
         };
       })
       .value();

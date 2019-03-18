@@ -37,7 +37,7 @@ class SystemLoadAverageWidget extends React.Component {
     const chartData = _(cpuLoadAvg)
       .map(item => ({
         ...item,
-        date: moment(item.date).format('HH:mm:ss')
+        date: moment(item.date).format('HH:mm:ss'),
       }))
       .value();
     return (
