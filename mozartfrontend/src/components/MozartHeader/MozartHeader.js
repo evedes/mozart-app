@@ -1,14 +1,14 @@
 import React from 'react';
 import './MozartHeader.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import mozartSilhouette from '../../libs/imgs/mozartfilled.png';
+import MozartImage from '../MozartImage';
 
 class MozartHeader extends React.Component {
   render() {
     return (
       <div className="MozartHeader d-flex justify-content-start align-items-center">
         <div className="ml-3">
-          <img src={mozartSilhouette} height="35" width="auto" alt="mozart" />
+          <MozartImage imageName="mozart-logo" height="35" />
         </div>
         <div className="ml-3 mt-2">MOZART METRICS</div>
         <div className="ml-auto mr-3">
