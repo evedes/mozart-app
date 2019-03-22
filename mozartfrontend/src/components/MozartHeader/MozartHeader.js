@@ -1,7 +1,7 @@
 import React from 'react';
 import './MozartHeader.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MozartImage from '../MozartImage';
+import MozartChartPeriodDropdown from '../MozartChartPeriodDropdown';
 
 class MozartHeader extends React.Component {
   render() {
@@ -12,7 +12,9 @@ class MozartHeader extends React.Component {
         </div>
         <div className="ml-3 mt-2">MOZART METRICS</div>
         <div className="ml-auto mr-3">
-          <FontAwesomeIcon icon="hamburger" style={{ height: '35px' }} />
+          <span className="mx-3">
+            <MozartChartPeriodDropdown />
+          </span>
         </div>
       </div>
     );
