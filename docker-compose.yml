@@ -1,23 +1,16 @@
 version: '2'
 services:
-  mozart_frontend:
-    image: mozart_frontend
-    container_name: mozart_frontend
-    build:
-      context: ./mozartfrontend
-      dockerfile: Dockerfile
-    ports:
-      - 80:80
-    networks:
-      - mozart-network
+  # mozart_frontend:
+  # * PRODUCTION: docker-compose.override.yml
+  # * DEVELOPMET: docker-compose.develop.yml
   mozart_backend:
     image: mozart_backend
     container_name: mozart_backend
     build:
       context: ./mozartbackend
       dockerfile: Dockerfile
-    ports:
-      - 3001:3001
+    # ports:
+    #   - 3001:3001
     networks:
       - mozart-network
   mozart_mongodb:
@@ -29,8 +22,8 @@ services:
       - MONGO_LOG_DIR=/dev/null
     volumes:
       - ./mongodb/data/db:/data/db
-    ports:
-      - 27017:27017
+    # ports:
+    #   - 27017:27017
     command: mongod --noauth --bind_ip_all --oplogSize 128
     networks:
       - mozart-network     

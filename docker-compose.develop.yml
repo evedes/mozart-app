@@ -1,0 +1,21 @@
+version: '2'
+services:
+  # DEVELOPMET: docker-compose.develop.yml
+  # TODO: replace with Development container: CRA + node.js
+  mozart_frontend:
+    image: mozart_frontend
+    container_name: mozart_frontend
+    build:
+      context: ./mozartfrontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+  mozart_backend:
+    ports:
+      - 3001:3001
+  mozart_mongodb:
+    ports:
+      - 27017:27017
+networks:
+  mozart-network:
+    driver: bridge
