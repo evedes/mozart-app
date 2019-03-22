@@ -1,0 +1,22 @@
+.MozartChartPeriodDropdown {
+  .dropdown-toggle {
+    background-color: #1a1b1c;
+
+    &:hover {
+      background-color: #2a2a2c;
+    }
+  }
+
+  .dropdown-menu {
+    background-color: #1a1b1c;
+    box-shadow: 2px 2px rgba(255, 255, 255, 0.05);
+  }
+  .dropdown-item {
+    color: white;
+
+    &:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
