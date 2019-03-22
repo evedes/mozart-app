@@ -3,7 +3,7 @@ import { string } from 'prop-types';
 import { Image } from 'cloudinary-react';
 
 class MozartImage extends React.Component {
-  defaultProps = {
+  static defaultProps = {
     crop: 'scale',
     height: '35',
     width: 'auto',
