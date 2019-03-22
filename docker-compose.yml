@@ -4,7 +4,7 @@ services:
     image: mozart_frontend
     container_name: mozart_frontend
     build:
-      context: .
+      context: ./mozartfrontend
       dockerfile: Dockerfile
     ports:
       - 80:80
