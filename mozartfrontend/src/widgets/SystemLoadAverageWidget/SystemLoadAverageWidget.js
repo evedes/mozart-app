@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
+import { string } from 'prop-types';
 import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
@@ -15,10 +17,22 @@ class SystemLoadAverageWidget extends React.Component {
 
   componentDidMount() {
     this.fetchSystemLoadAvg();
+    this.systemLoadAverageWidgetInterval = setInterval(
+      () => this.fetchSystemLoadAvg(),
+      10 * 1000
+    );
+  }
+
+  componentDidUpdate(prevProps) {
+    const { chartingPeriod } = this.props;
+    if (prevProps.chartingPeriod !== chartingPeriod) {
+      return this.fetchSystemLoadAvg();
+    }
   }
 
   fetchSystemLoadAvg = async () => {
-    const cpuLoadAvg = await fetch('api/cpuLoadAvg', {
+    const { chartingPeriod } = this.props;
+    const cpuLoadAvg = await fetch(`api/cpuLoadAvg/${chartingPeriod}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -26,6 +40,10 @@ class SystemLoadAverageWidget extends React.Component {
     }).then(res => res.json());
     return this.setState({ cpuLoadAvg });
   };
+
+  componentDidUnMount() {
+    clearInterval(this.systemLoadAverageWidgetInterval);
+  }
 
   render() {
     const { cpuLoadAvg } = this.state;
@@ -52,4 +70,12 @@ class SystemLoadAverageWidget extends React.Component {
   }
 }
 
-export default SystemLoadAverageWidget;
+SystemLoadAverageWidget.propTypes = {
+  chartingPeriod: string,
+};
+
+const mapStateToProps = state => ({
+  chartingPeriod: state.chartingPeriod,
+});
+
+export default connect(mapStateToProps)(SystemLoadAverageWidget);

@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { string } from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -15,10 +17,27 @@ class NetworkInterfacesWidget extends React.Component {
 
   componentDidMount() {
     this.fetchNetworkStatz();
+    this.networkInterfacesWidgetInterval = setInterval(
+      () => this.fetchNetworkStatz(),
+      10 * 1000
+    );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { chartingPeriod } = this.props;
+    const { networkStatz } = this.state;
+
+    if (prevProps.chartingPeriod !== chartingPeriod) {
+      return this.fetchNetworkStatz();
+    }
+    if (prevState.networkStatz !== networkStatz) {
+      return true;
+    }
   }
 
   fetchNetworkStatz = async () => {
-    const networkStatz = await fetch('api/networkStatz', {
+    const { chartingPeriod } = this.props;
+    const networkStatz = await fetch(`api/networkStatz/${chartingPeriod}`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -26,6 +45,10 @@ class NetworkInterfacesWidget extends React.Component {
     }).then(res => res.json());
     return this.setState({ networkStatz });
   };
+
+  componentDidUnMount() {
+    clearInterval(this.networkInterfacesWidgetInterval);
+  }
 
   render() {
     const { networkStatz } = this.state;
@@ -57,4 +80,12 @@ class NetworkInterfacesWidget extends React.Component {
   }
 }
 
-export default NetworkInterfacesWidget;
+NetworkInterfacesWidget.propTypes = {
+  chartingPeriod: string,
+};
+
+const mapStateToProps = state => ({
+  chartingPeriod: state.chartingPeriod,
+});
+
+export default connect(mapStateToProps)(NetworkInterfacesWidget);
