@@ -9,10 +9,28 @@ require('../timers');
 const cpuLoadAvgModel = require('../models/cpuLoadAvg');
 const networkStatzModel = require('../models/networkStatz');
 
-router.get('/cpuLoadAvg', async (req, res) => {
-  const endDate = moment().startOf('minute');
+const filterData = (doc, chartingPeriod) => {
+  switch (chartingPeriod) {
+    case '10':
+      return doc.date.getSeconds() % 10 === 0 ? doc : null;
+    case '60':
+      return doc.date.getSeconds() % 20 === 0 ? doc : null;
+    case '720':
+      return doc.date.getSeconds() === 0 ? doc : null;
+    case '1440':
+      return doc.date.getSeconds() === 0 && doc.date.getMinutes() % 10 === 0
+        ? doc
+        : null;
+    default:
+      return null;
+  }
+};
+
+router.get('/cpuLoadAvg/:chartingPeriod', async (req, res) => {
+  const { chartingPeriod } = req.params;
+  const endDate = moment();
   const startDate = moment()
-    .subtract(10, 'minutes')
+    .subtract(chartingPeriod, 'minutes')
     .startOf('minute');
 
   await cpuLoadAvgModel
@@ -33,15 +51,18 @@ router.get('/cpuLoadAvg', async (req, res) => {
             date,
           };
         })
+        .filter(doc => filterData(doc, chartingPeriod))
+        .compact()
         .value();
       res.json(averageLoads);
     });
 });
 
-router.get('/networkStatz', async (req, res) => {
-  const endDate = moment().startOf('minute');
+router.get('/networkStatz/:chartingPeriod', async (req, res) => {
+  const { chartingPeriod } = req.params;
+  const endDate = moment();
   const startDate = moment()
-    .subtract(10, 'minutes')
+    .subtract(chartingPeriod, 'minutes')
     .startOf('minute');
 
   await networkStatzModel
@@ -62,6 +83,8 @@ router.get('/networkStatz', async (req, res) => {
             date,
           };
         })
+        .filter(doc => filterData(doc, chartingPeriod))
+        .compact()
         .value();
       res.json(networkStatz);
     });
