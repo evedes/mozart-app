@@ -1,8 +1,8 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faHamburger,
   faSpinner,
   faCaretDown,
+  faClock,
 } from '@fortawesome/free-solid-svg-icons';
 
-export default library.add(faHamburger, faSpinner, faCaretDown);
+export default library.add(faSpinner, faCaretDown, faClock);
