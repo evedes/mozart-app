@@ -66,6 +66,5 @@
     "husky": "^1.3.1",
     "prettier": "^1.16.4"
   },
-  "proxy": "http://localhost:3001",
   "homepage": "./"
 }
