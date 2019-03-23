@@ -2,12 +2,16 @@
 
 ### 01. What is Mozart Metrics all about?
 
-  Mozart Metrics is a web app that you can launch on a linux box / home server and that will collect the metrics of the host system and show it.
-  
+  Mozart Metrics is a self-contained docker web app that you can launch on a linux box / home server and that will collect metrics.
+  You will have the possibility to create your own dashboards and chart all the available interfaces and resources as you wish.
 
-###   
+  NOTE: This app is being developped as a side project so don't expect it to grow quickly.
 
-### 02. How to build it and run it for production
+  Main focus: 
+    - collect system metrics
+    - collect network inferface metrics
+
+### 02. How to build and run it for production
 
 NOTE: follow this instructions if you only wanna see Mozart Metrics Up&Running
 
