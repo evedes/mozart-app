@@ -110,22 +110,6 @@ then
   fi
 fi
 
-# docker-compose down
-if [[ "$SERVICE_DOWN" = "1" ]]
-then
-  echo "------------------------------------------------------------";
-  echo "[DOWN] Shuting down services for environment: $ENVIRONMENT";
-  echo "------------------------------------------------------------";
-  if [[ "$ENVIRONMENT" = "prod" ]]
-  then
-    # build for production
-    docker-compose down;
-  else
-    # build for development
-    docker-compose -f docker-compose.yml -f docker-compose.develop.yml down;
-  fi
-fi
-
 # docker-compose logs
 if [[ "$LOGS" = "1" ]]
 then
@@ -139,6 +123,22 @@ then
   else
     # build for development
     docker-compose -f docker-compose.yml -f docker-compose.develop.yml logs -f;
+  fi
+fi
+
+# docker-compose down
+if [[ "$SERVICE_DOWN" = "1" ]]
+then
+  echo "------------------------------------------------------------";
+  echo "[DOWN] Shuting down services for environment: $ENVIRONMENT";
+  echo "------------------------------------------------------------";
+  if [[ "$ENVIRONMENT" = "prod" ]]
+  then
+    # build for production
+    docker-compose down;
+  else
+    # build for development
+    docker-compose -f docker-compose.yml -f docker-compose.develop.yml down;
   fi
 fi
 
