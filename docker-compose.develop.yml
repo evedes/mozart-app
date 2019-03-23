@@ -9,6 +9,9 @@ services:
       dockerfile: Dockerfile.develop
     ports:
       - 80:3000
+    volumes:
+      - "./mozartfrontend/sourcecode:/usr/src/mozartfrontend"
+      - "/usr/src/mozartfrontend/node_modules" # Bind to the container internal node_modules
     networks:
       - mozart-network
   mozart_backend:
