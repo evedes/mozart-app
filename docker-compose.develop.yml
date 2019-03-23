@@ -1,0 +1,25 @@
+version: '2'
+services:
+  # DEVELOPMET: docker-compose.develop.yml
+  mozart_frontend:
+    image: mozart_frontend
+    container_name: mozart_frontend
+    build:
+      context: ./mozartfrontend
+      dockerfile: Dockerfile.develop
+    ports:
+      - 80:3000
+    volumes:
+      - "./mozartfrontend/sourcecode:/usr/src/mozartfrontend"
+      - "/usr/src/mozartfrontend/node_modules" # Bind to the container internal node_modules
+    networks:
+      - mozart-network
+  mozart_backend:
+    ports:
+      - 3001:3001
+  mozart_mongodb:
+    ports:
+      - 27017:27017
+networks:
+  mozart-network:
+    driver: bridge

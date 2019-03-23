@@ -1,0 +1,8 @@
+FROM node:10 as mozartfrontend
+WORKDIR /usr/src/mozartfrontend
+COPY ./sourcecode/package*.json ./
+RUN npm ci
+COPY ./sourcecode ./
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
