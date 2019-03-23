@@ -48,7 +48,7 @@ Make sure you have mongod 4.0.5 running in your machine
 
 ### 05. Contributors
 
-  01. Nelson Neves: Old School dev Rockstart and Docker Captain! 🤘 Thanks for all the wisdom and patience helping me to setup the containerized boilerplate! You rock mate!
+  01. Nelson Neves: Old School dev Rockstar and Docker Captain! 🤘 Thanks for all the wisdom and patience helping me to setup this containerized boilerplate! You rock mate!
 
 ...
 
