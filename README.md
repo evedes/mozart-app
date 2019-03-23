@@ -1,5 +1,7 @@
 ## MOZART METRICS PROJECT - CODE DK01
 
+<img src='https://res.cloudinary.com/evedes/image/upload/v1553191066/mozart-app/mozart-logo.png' height="80px"/>
+
 ### 01. What is Mozart Metrics all about?
 
   Mozart Metrics is a self-contained docker web app that you can launch on a linux box / home server and that will collect metrics.
