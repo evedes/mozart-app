@@ -7,13 +7,15 @@
   Mozart Metrics is a self-contained docker web app that you can launch on a linux box / home server and that will collect metrics.
   You will have the possibility to create your own dashboards and chart all the available interfaces and resources as you wish.
 
-  NOTE: This app is being developped as a side project so don't expect it to grow quickly.
+  NOTE: This app is being developed as a side project so don't expect it to grow quickly.
 
   Main focus: 
+    
     - collect system metrics
+
     - collect network inferface metrics
 
-### 02. How to build and run it for production
+### 02. How to build and run PROD environment (containerized)
 
 NOTE: follow this instructions if you only wanna see Mozart Metrics Up&Running
 
@@ -26,7 +28,7 @@ Requirements: You'll need to have docker and docker-compose installed in your sy
 5. open your browser on localhost
 6. enjoy 🚀🎸🤘🍾
 
-### 03. How to run it for development
+### 03. How to build and run DEV environment (containerized)
 
 We have a containerized solution with hot reloading for dev.
 
@@ -52,6 +54,15 @@ Make sure you have mongod 4.0.5 running in your machine
 
   01. Nelson Neves: Old School dev Rockstar and Docker Captain! 🤘 Thanks for all the wisdom and patience helping me to setup this containerized boilerplate! You rock mate!
 
+### 06. Features to be developed
+
+    - Possibility to choose polling period
+    - Possibility to change from polling to Node streams mode by chart
+    - Possibility to zoom in/out charts
+    - Authentication
+    - Possibility to create dashboards with point & click
+    - Possibility to add data-sources to be monitored and charted
+    - To the infinity & beyond
 ...
 
 --- 
