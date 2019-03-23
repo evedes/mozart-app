@@ -26,6 +26,18 @@ fi
 # Get ARGS into LINES, lowercase all strings
 ARGS_LINES=$(echo $@ | tr " " "\n" | tr A-Z a-z);
 
+# Special development entry, does not require $ARG1
+if [[ $(echo $ARGS_LINES | grep "add-backend-to-hosts") ]]
+then
+    if ! cat /etc/hosts | grep 'mozart_backend' > /dev/null; then
+        echo 'Adding `127.0.0.1 mozart_backend` entry to /etc/hosts';
+        sudo sh -c "echo '127.0.0.1       mozart_backend\n' >> /etc/hosts";
+    else
+      echo 'No change required, found `127.0.0.1 mozart_backend` entry in /etc/hosts';
+    fi
+  exit $RETURN_SUCCESS;
+fi
+
 #  ARG1 => ENVIRONMENT: ['prod', 'dev']
 if [[ "$1" !=  "prod" && "$1" !=  "dev" ]]
 then

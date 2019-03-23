@@ -15,8 +15,16 @@ services:
     networks:
       - mozart-network
   mozart_backend:
+    image: mozart_backend
+    container_name: mozart_backend
+    build:
+      context: ./mozartbackend
+      dockerfile: Dockerfile.develop
     ports:
       - 3001:3001
+    volumes:
+      - "./mozartbackend/sourcecode:/api"
+      - "/api/node_modules" # Bind to the container internal node_modules
   mozart_mongodb:
     ports:
       - 27017:27017
