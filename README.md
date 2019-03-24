@@ -7,6 +7,10 @@
   Mozart Metrics is a self-contained docker web app that you can launch on a linux box / home server and that will collect metrics.
   You will have the possibility to create your own dashboards and chart all the available interfaces and resources as you wish.
 
+<div style="text-align: center">
+  <img src='https://res.cloudinary.com/evedes/image/upload/v1553425374/mozart-app/Screen_Shot_2019-03-24_at_11.02.02.png' height="300px" />
+</div>
+
   NOTE: This app is being developed as a side project so don't expect it to grow quickly.
 
   Main focus: 
