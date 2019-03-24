@@ -24,6 +24,8 @@ import './MozartAreaChart.scss';
 class MozartAreaChart extends React.Component {
   static defaultProps = {
     colors: defaultColors,
+    tooltipUnit: '',
+    tooltipCursorColor: 'red',
   };
 
   state = {
@@ -62,7 +64,7 @@ class MozartAreaChart extends React.Component {
   };
 
   renderChart = () => {
-    const { data, colors, xKey } = this.props;
+    const { data, colors, xKey, tooltipUnit, tooltipCursorColor } = this.props;
     const yKeys = this.getLineKeys();
     return (
       <>
@@ -97,11 +99,12 @@ class MozartAreaChart extends React.Component {
             <YAxis type="number" stroke={this.getAxisColor()} />
             <CartesianGrid stroke={this.getGridColor()} />
             <Tooltip
-              cursor={{ stroke: 'red' }}
+              cursor={{ stroke: tooltipCursorColor }}
               contentStyle={{
                 backgroundColor: '#161719',
                 border: this.getGridColor(),
               }}
+              formatter={(value, name) => [`${value} ${tooltipUnit}`, name]}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -125,6 +128,8 @@ MozartAreaChart.propTypes = {
   colors: array,
   title: string,
   xKey: string,
+  tooltipUnit: string,
+  tooltipCursorColor: string,
 };
 
 export default MozartAreaChart;
