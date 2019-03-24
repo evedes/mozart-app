@@ -7,6 +7,9 @@
   Mozart Metrics is a self-contained docker web app that you can launch on a linux box / home server and that will collect metrics for you.
   You will have the possibility to create your own dashboards, charts and datatables to illustrate all the available system, devices and interfaces metrics and get visual awareness of what's happening *"under the hood"* of your system.
 
+  You can see it running here in my own [VEDDER BOX](http://vedder.ddns.net) which runs Ubuntu Server 18.04 LTS with docker.
+
+
 ### 02. Why Mozart Metrics?
 
   For fun ❤️ and profit 🧠
