@@ -4,6 +4,7 @@ import StatzHeader from '../../widgets/StatzHeader';
 import NetworkInterfacesWidget from '../../widgets/NetworkInterfacesWidget';
 import SystemLoadAverageWidget from '../../widgets/SystemLoadAverageWidget';
 import MemoryStatzWidget from '../../widgets/MemoryStatzWidget';
+import ProcessesStatzWidget from '../../widgets/ProcessesStatzWidget';
 import './StatzGrid.scss';
 
 import {
@@ -18,6 +19,7 @@ const gridComponents = [
   { gridComponent: NetworkInterfacesWidget, key: 'NetworkInterfacesWidget' },
   { gridComponent: SystemLoadAverageWidget, key: 'SystemLoadAverageWidget' },
   { gridComponent: MemoryStatzWidget, key: 'MemoryStatzWidget' },
+  { gridComponent: ProcessesStatzWidget, key: 'ProcessesStatzWidget' },
 ];
 
 class StatzGrid extends React.Component {
