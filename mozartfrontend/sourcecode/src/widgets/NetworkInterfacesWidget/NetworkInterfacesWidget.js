@@ -71,9 +71,10 @@ class NetworkInterfacesWidget extends React.Component {
     return (
       <MozartBox>
         <MozartAreaChart
-          title="Network Interface Widget - RX/TX (bytes)"
+          title="Network Interface Widget - RX/TX (kBytes / sec)"
           data={chartData}
           xKey="date"
+          tooltipUnit="kB/sec"
         />
       </MozartBox>
     );
