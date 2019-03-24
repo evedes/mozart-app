@@ -36,9 +36,6 @@ class StatzHeader extends React.Component {
     return (
       <MozartBox>
         <div>
-          <h3>General System Info</h3>
-        </div>
-        <div>
           <strong>Hostname:</strong>
           <span className="ml-2">{hostname}</span>
         </div>
