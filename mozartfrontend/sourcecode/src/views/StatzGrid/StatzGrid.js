@@ -3,6 +3,7 @@ import MozartGridLayout from '../../components/MozartGridLayout';
 import StatzHeader from '../../widgets/StatzHeader';
 import NetworkInterfacesWidget from '../../widgets/NetworkInterfacesWidget';
 import SystemLoadAverageWidget from '../../widgets/SystemLoadAverageWidget';
+import MemoryStatzWidget from '../../widgets/MemoryStatzWidget';
 import './StatzGrid.scss';
 
 import {
@@ -16,6 +17,7 @@ const gridComponents = [
   { gridComponent: StatzHeader, key: 'StatzHeader' },
   { gridComponent: NetworkInterfacesWidget, key: 'NetworkInterfacesWidget' },
   { gridComponent: SystemLoadAverageWidget, key: 'SystemLoadAverageWidget' },
+  { gridComponent: MemoryStatzWidget, key: 'MemoryStatzWidget' },
 ];
 
 class StatzGrid extends React.Component {
