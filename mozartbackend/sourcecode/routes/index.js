@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 const os = require('os');
+const si = require('systeminformation');
+
 const _ = require('lodash');
 
 require('../timers');
@@ -78,8 +80,8 @@ router.get('/networkStatz/:chartingPeriod', async (req, res) => {
         .map(doc => {
           const { rx_sec: rxSec, tx_sec: txSec, iface, date } = doc;
           return {
-            rx_sec: _.round(-rxSec / 1024, 4),
-            tx_sec: _.round(txSec / 1024, 4),
+            rx_sec: _.round(-rxSec / 1024, 3),
+            tx_sec: _.round(txSec / 1024, 3),
             iface,
             date,
           };
@@ -123,6 +125,15 @@ router.get('/memoryStatz/:chartingPeriod', async (req, res) => {
         .value();
       res.json(memoryStatz);
     });
+});
+
+router.get('/processesStatz', async (req, res) => {
+  await si
+    .processes()
+    .then(data => {
+      res.json(data);
+    })
+    .catch(err => console.error(err));
 });
 
 router.get('/cpuInfo', (req, res) => {
