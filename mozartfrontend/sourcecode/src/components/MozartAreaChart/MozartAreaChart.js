@@ -55,13 +55,13 @@ class MozartAreaChart extends React.Component {
 
   tickFormat = tick => moment(tick).format('HH:mm:ss');
 
-  Header = () => {
+  renderHeader = () => {
     const { title } = this.props;
     const { isChartHovered } = this.state;
     return <MozartChartHeader title={title} isChartHovered={isChartHovered} />;
   };
 
-  Chart = () => {
+  renderChart = () => {
     const { data, colors, xKey } = this.props;
     const yKeys = this.getLineKeys();
     return (
@@ -113,8 +113,8 @@ class MozartAreaChart extends React.Component {
     return (
       <MozartChartContainer
         headerHeight="30px"
-        Chart={this.Chart}
-        Header={this.Header}
+        Chart={this.renderChart}
+        Header={this.renderHeader}
       />
     );
   }
