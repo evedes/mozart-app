@@ -8,6 +8,7 @@ const _ = require('lodash');
 require('../timers');
 const cpuLoadAvgModel = require('../models/cpuLoadAvg');
 const networkStatzModel = require('../models/networkStatz');
+const memoryStatzModel = require('../models/memoryStatz');
 
 const filterData = (doc, chartingPeriod) => {
   switch (chartingPeriod) {
@@ -45,9 +46,9 @@ router.get('/cpuLoadAvg/:chartingPeriod', async (req, res) => {
         .map(doc => {
           const { oneMin, fiveMin, fifteenMin, date } = doc;
           return {
-            oneMin: _.round(_.toNumber(oneMin), 3),
-            fiveMin: _.round(_.toNumber(fiveMin), 3),
             fifteenMin: _.round(_.toNumber(fifteenMin), 3),
+            fiveMin: _.round(_.toNumber(fiveMin), 3),
+            oneMin: _.round(_.toNumber(oneMin), 3),
             date,
           };
         })
@@ -77,8 +78,8 @@ router.get('/networkStatz/:chartingPeriod', async (req, res) => {
         .map(doc => {
           const { rx_sec: rxSec, tx_sec: txSec, iface, date } = doc;
           return {
-            rx_sec: -rxSec / 1024,
-            tx_sec: txSec / 1024,
+            rx_sec: _.round(-rxSec / 1024, 4),
+            tx_sec: _.round(txSec / 1024, 4),
             iface,
             date,
           };
@@ -87,6 +88,40 @@ router.get('/networkStatz/:chartingPeriod', async (req, res) => {
         .compact()
         .value();
       res.json(networkStatz);
+    });
+});
+
+router.get('/memoryStatz/:chartingPeriod', async (req, res) => {
+  const { chartingPeriod } = req.params;
+  const endDate = moment();
+  const startDate = moment()
+    .subtract(chartingPeriod, 'minutes')
+    .startOf('minute');
+
+  await memoryStatzModel
+    .find({
+      date: {
+        $lte: endDate,
+        $gte: startDate,
+      },
+    })
+    .exec((err, docs) => {
+      const memoryStatz = _(docs)
+        .map(doc => {
+          const { total, free, used, date, active, available } = doc;
+          return {
+            available: _.round(available / 1024 / 1024, 3),
+            active: _.round(active / 1024 / 1024, 3),
+            used: _.round(used / 1024 / 1024, 3),
+            free: _.round(free / 1024 / 1024, 3),
+            total: _.round(total / 1024 / 1024, 3),
+            date,
+          };
+        })
+        .filter(doc => filterData(doc, chartingPeriod))
+        .compact()
+        .value();
+      res.json(memoryStatz);
     });
 });
 
