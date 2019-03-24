@@ -41,7 +41,6 @@ router.get('/cpuLoadAvg/:chartingPeriod', async (req, res) => {
       },
     })
     .exec((err, docs) => {
-      console.log(`reading cpu load avg - period: ${chartingPeriod} mins ✅`);
       const averageLoads = _(docs)
         .map(doc => {
           const { oneMin, fiveMin, fifteenMin, date } = doc;
@@ -74,7 +73,6 @@ router.get('/networkStatz/:chartingPeriod', async (req, res) => {
       },
     })
     .exec((err, docs) => {
-      console.log(`reading newtwork statz - period: ${chartingPeriod} mins ✅`);
       const networkStatz = _(docs)
         .map(doc => {
           const { rx_sec: rxSec, tx_sec: txSec, iface, date } = doc;
