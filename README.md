@@ -83,6 +83,7 @@ Make sure you have mongod 4.0.5 running in your machine and that you tweak the .
   01. Frontend
       - Implement Storybook 5 and create a component showcase;
       - Implement classnames package
+      - Possibility to add horizontal lines (tresholds) and send warnings when levels go above them (i.e.: CPU temperature > 70ºC, send notification or warning to a slackbot)
       - Create an abstracted header for widgets like Processes Statz, similar to the one used in charts (almost sure to improve the charts one - ChartHeader - to be more generic)
       - Abstract widgets polling feature to an HOC
       - Abstract spinner handlers to an iiHOC
@@ -98,7 +99,10 @@ Make sure you have mongod 4.0.5 running in your machine and that you tweak the .
       - Create metrics for the storage devices
       - Add more system, interfaces and devices metrics
 
-  03. Future Features
+  03. Ops
+      - send notifications and system warnings to a slack chatbot
+
+  04. Future Features
       - Possibility to add external data-sources to be monitored and charted
       - To the infinity & beyond
 ...
