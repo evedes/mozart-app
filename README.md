@@ -9,6 +9,7 @@
 
   You can see it running here in my own [VEDDER BOX](http://vedder.ddns.net) which runs Ubuntu Server 18.04 LTS with docker.
 
+  **Want to contribute? Check Item 07**
 
 ### 02. Why Mozart Metrics?
 
@@ -82,6 +83,8 @@ Make sure you have mongod 4.0.5 running in your machine and that you tweak the .
   *NOTE: if you wanna contribute to this project please send me an e-mail to **eduardo.vedes@gmail.com***
 
 ### 07. Features to be developed
+
+  GitHub Kanban: [HERE](https://github.com/evedes/mozart-app/projects/1)
 
   01. Frontend
       - Implement Storybook 5 and create a component showcase;
