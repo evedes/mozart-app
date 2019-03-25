@@ -1,4 +1,4 @@
-version: '2'
+version: '2.3'
 services:
   # mozart_frontend:
   # * PRODUCTION: docker-compose.override.yml
