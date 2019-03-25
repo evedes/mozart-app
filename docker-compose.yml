@@ -3,16 +3,11 @@ services:
   # mozart_frontend:
   # * PRODUCTION: docker-compose.override.yml
   # * DEVELOPMET: docker-compose.develop.yml
-  mozart_backend:
-    image: mozart_backend
-    container_name: mozart_backend
-    build:
-      context: ./mozartbackend
-      dockerfile: Dockerfile
-    # ports:
-    #   - 3001:3001
-    networks:
-      - mozart-network
+  #
+  # mozart_backend:
+  # * PRODUCTION: docker-compose.override.yml
+  # * DEVELOPMET: docker-compose.develop.yml
+  #
   mozart_mongodb:
     image: mongo:4.0.5
     restart: unless-stopped

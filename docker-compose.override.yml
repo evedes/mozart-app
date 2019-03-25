@@ -1,14 +1,25 @@
 version: '2.3'
 services:
-  # PRODUCTION: docker-compose.override.yml
+  # PRODUCTION: mozart_frontend
   mozart_frontend:
-    image: mozart_frontend
-    container_name: mozart_frontend
+    image: mozart_frontend_production
+    container_name: mozart_frontend_production
     build:
       context: ./mozartfrontend
       dockerfile: Dockerfile
     ports:
       - 80:80
+    networks:
+      - mozart-network
+  # PRODUCTION: mozart_backend
+  mozart_backend:
+    image: mozart_backend_production
+    container_name: mozart_backend_production
+    build:
+      context: ./mozartbackend
+      dockerfile: Dockerfile
+    # ports:
+    #   - 3001:3001
     networks:
       - mozart-network
 networks:
