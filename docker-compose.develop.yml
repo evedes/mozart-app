@@ -1,9 +1,9 @@
 version: '2.3'
 services:
-  # DEVELOPMET: docker-compose.develop.yml
+  # DEVELOPMET: mozart_frontend
   mozart_frontend:
-    image: mozart_frontend
-    container_name: mozart_frontend
+    image: mozart_frontend_develop
+    container_name: mozart_frontend_develop
     build:
       context: ./mozartfrontend
       dockerfile: Dockerfile.develop
@@ -14,9 +14,10 @@ services:
       - "/usr/src/mozartfrontend/node_modules" # Bind to the container internal node_modules
     networks:
       - mozart-network
+  # DEVELOPMET: mozart_backend
   mozart_backend:
-    image: mozart_backend
-    container_name: mozart_backend
+    image: mozart_backend_develop
+    container_name: mozart_backend_develop
     build:
       context: ./mozartbackend
       dockerfile: Dockerfile.develop
@@ -32,6 +33,8 @@ services:
       retries: 5
       start_period: 10s
     restart: always
+    networks:
+      - mozart-network
   mozart_mongodb:
     ports:
       - 27017:27017
