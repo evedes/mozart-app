@@ -1,4 +1,4 @@
-version: '2'
+version: '2.3'
 services:
   # DEVELOPMET: docker-compose.develop.yml
   mozart_frontend:
@@ -25,9 +25,27 @@ services:
     volumes:
       - "./mozartbackend/sourcecode:/api"
       - "/api/node_modules" # Bind to the container internal node_modules
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: always
   mozart_mongodb:
     ports:
       - 27017:27017
+  # required to restart docker containers on healthcheck failure:
+  # https://stackoverflow.com/questions/47088261/restarting-an-unhealthy-docker-container-based-on-healthcheck
+  autoheal:
+    restart: always
+    image: willfarrell/autoheal
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - mozart-network
 networks:
   mozart-network:
     driver: bridge
