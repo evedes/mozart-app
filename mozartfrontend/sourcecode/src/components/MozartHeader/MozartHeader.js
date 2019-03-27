@@ -12,6 +12,7 @@ class MozartHeader extends React.Component {
   };
 
   render() {
+    const { currentBreakpoint } = this.props;
     return (
       <div className="MozartHeader d-flex justify-content-start align-items-center">
         <div className="mx-3">
@@ -20,7 +21,7 @@ class MozartHeader extends React.Component {
         <div style={{ fontSize: this.getFontSize() }}>MOZART METRICS</div>
         <div className="ml-auto mr-3">
           <span className="mx-3">
-            <MozartChartPeriodDropdown />
+            <MozartChartPeriodDropdown currentBreakpoint={currentBreakpoint} />
           </span>
         </div>
       </div>
