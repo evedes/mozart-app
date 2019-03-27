@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { func, string } from 'prop-types';
 import MozartGridLayout from '../../components/MozartGridLayout';
 import StatzHeader from '../../widgets/StatzHeader';
@@ -26,9 +27,41 @@ const gridComponents = [
   { gridComponent: ProcessesStatzWidget, key: 'ProcessesStatzWidget' },
 ];
 
+const dashboardConfig = {
+  defaultLayouts,
+  defaultBreakpoints,
+  rowHeight,
+  defaultCols,
+};
+
 class StatzGrid extends React.Component {
-  static defaultProps = {
-    currentBreakpoint: 'lg',
+  state = {
+    gridWidth: 0,
+  };
+
+  componentDidMount() {
+    this.getInitialBreakpoint();
+    console.log('defaultBreakpoints: ', defaultBreakpoints);
+  }
+
+  getInitialBreakpoint = () => {
+    const { gridWidth } = this.state;
+    _(defaultBreakpoints)
+      .map((width, breakpoint) => {
+        if (gridWidth < width) {
+          return this.onBreakpointChange(breakpoint);
+        }
+        return null;
+      })
+      .compact()
+      .value();
+  };
+
+  getGridWidth = gridWidth => {
+    console.log('ran: ', gridWidth);
+    this.setState({
+      gridWidth,
+    });
   };
 
   onBreakpointChange = breakpoint => {
@@ -41,13 +74,11 @@ class StatzGrid extends React.Component {
     return (
       <div className="StatzGrid">
         <MozartGridLayout
+          {...dashboardConfig}
           gridComponents={gridComponents}
-          defaultLayouts={defaultLayouts}
-          defaultCols={defaultCols}
-          defaultBreakpoints={defaultBreakpoints}
+          getGridWidth={this.getGridWidth}
           currentBreakpoint={currentBreakpoint}
           onBreakpointChange={this.onBreakpointChange}
-          rowHeight={rowHeight}
         />
       </div>
     );

@@ -1,14 +1,25 @@
 import React from 'react';
 import _ from 'lodash';
 import { object, number, array, func, string } from 'prop-types';
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import { withSize } from 'react-sizeme';
+import { Responsive } from 'react-grid-layout';
 
 import('./MozartGridLayout.scss');
 import('../../../node_modules/react-resizable/css/styles.css');
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
-
 class MozartGridLayout extends React.Component {
+  componentDidMount() {
+    this.handleGridWidth();
+  }
+
+  handleGridWidth = () => {
+    const {
+      size: { width: gridWidth },
+      getGridWidth,
+    } = this.props;
+    getGridWidth(gridWidth);
+  };
+
   render() {
     const {
       defaultLayouts,
@@ -17,11 +28,14 @@ class MozartGridLayout extends React.Component {
       gridComponents,
       onBreakpointChange,
       currentBreakpoint,
+      size: { width: gridWidth },
     } = this.props;
+
     return (
       <div className="MozartGridLayout">
-        <ResponsiveGridLayout
+        <Responsive
           {...this.props}
+          width={gridWidth}
           layouts={defaultLayouts}
           onBreakpointChange={onBreakpointChange}
           breakpoints={defaultBreakpoints}
@@ -37,7 +51,7 @@ class MozartGridLayout extends React.Component {
               );
             })
             .value()}
-        </ResponsiveGridLayout>
+        </Responsive>
       </div>
     );
   }
@@ -52,6 +66,8 @@ MozartGridLayout.propTypes = {
   rowHeight: number,
   gridComponents: array,
   dispatch: func,
+  size: string,
+  getGridWidth: func,
 };
 
-export default MozartGridLayout;
+export default withSize()(MozartGridLayout);
