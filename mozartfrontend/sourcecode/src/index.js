@@ -7,9 +7,9 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import './libs/fontAwesomeLib';
 
-import { chartingPeriod } from './reducers';
+import mozartReducer from './reducers';
 
-const store = createStore(chartingPeriod);
+const store = createStore(mozartReducer);
 
 ReactDOM.render(
   <Provider store={store}>
