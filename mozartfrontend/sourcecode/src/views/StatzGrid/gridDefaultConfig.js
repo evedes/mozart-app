@@ -47,15 +47,3 @@ export const defaultLayouts = {
 };
 
 export const rowHeight = 30;
-
-export const defaultBreakpoints = {
-  lg: 1600,
-  md: 1280,
-  sm: 980,
-};
-
-export const defaultCols = {
-  lg: 3,
-  md: 2,
-  sm: 1,
-};
