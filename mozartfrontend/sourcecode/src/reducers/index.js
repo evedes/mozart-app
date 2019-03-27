@@ -1,6 +1,6 @@
 const initialState = {
   chartingPeriod: '10',
-  currentBreakpoint: 'lg',
+  currentBreakpoint: 'sm',
 };
 
 const reducer = (state = initialState, action) => {
