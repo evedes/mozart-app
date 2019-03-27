@@ -41,20 +41,16 @@ class ProcessesStatzWidget extends React.Component {
       return <MozartSpinner />;
     }
     const { list, ...processesInfo } = processesStatz; //eslint-disable-line
-    console.log(processesInfo);
     return (
       <MozartBox>
         <div className="text-center m-1">Processes Statz</div>
         <ul className="d-flex list-inline justify-content-center">
           {_(processesInfo)
-            .map((item, key) => {
-              console.log('key: ', key, 'item: ', item);
-              return (
-                <li key={key} className="list-inline-item mx-3">
-                  {key}: {item}
-                </li>
-              );
-            })
+            .map((item, key) => (
+              <li key={key} className="list-inline-item mx-3">
+                {key}: {item}
+              </li>
+            ))
             .value()}
         </ul>
       </MozartBox>
