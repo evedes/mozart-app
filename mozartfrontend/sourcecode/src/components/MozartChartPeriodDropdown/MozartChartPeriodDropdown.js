@@ -56,7 +56,7 @@ class MozartChartPeriodDropdown extends React.Component {
         <ButtonDropdown isOpen={isDropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret size="md" color="dark">
             <FontAwesomeIcon icon="clock" />
-            <span className="ml-1">{this.renderChartingPeriodText()}</span>
+            <span className="mx-2">{this.renderChartingPeriodText()}</span>
           </DropdownToggle>
           <DropdownMenu right>
             <DropdownItem value={10} onClick={this.setChartingPeriod}>
