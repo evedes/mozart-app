@@ -1,43 +1,64 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import { object, number, array, func, string } from 'prop-types';
 import { withSize } from 'react-sizeme';
 import { Responsive } from 'react-grid-layout';
+import { changeCurrentBreakpoint } from '../../actions/currentBreakpoint.actions';
+import { defaultBreakpoints, defaultCols } from './gridLayoutSettings';
+import MozartSpinner from '../MozartSpinner';
 
 import('./MozartGridLayout.scss');
 import('../../../node_modules/react-resizable/css/styles.css');
 
 class MozartGridLayout extends React.Component {
+  static defaultProps = {
+    defaultBreakpoints,
+    defaultCols,
+  };
+
   componentDidMount() {
-    this.handleGridWidth();
+    this.setInitialBreakpoint();
   }
 
-  handleGridWidth = () => {
+  setInitialBreakpoint = () => {
     const {
-      size: { width: gridWidth },
-      getGridWidth,
+      size: { width },
     } = this.props;
-    getGridWidth(gridWidth);
+    const initialBreakpoint = _.findKey(
+      defaultBreakpoints,
+      item => width <= item
+    );
+    console.log('initialBreakpoint: ', initialBreakpoint);
+    return this.onBreakpointChange(initialBreakpoint);
+  };
+
+  onBreakpointChange = breakpoint => {
+    const { dispatch } = this.props;
+    dispatch(changeCurrentBreakpoint(breakpoint));
   };
 
   render() {
     const {
       defaultLayouts,
-      defaultBreakpoints,
-      defaultCols,
       gridComponents,
-      onBreakpointChange,
       currentBreakpoint,
-      size: { width: gridWidth },
+      size: { width },
     } = this.props;
+
+    if (_.isNil(currentBreakpoint)) {
+      return <MozartSpinner />;
+    }
+
+    console.log('currentBreakpoint: ', currentBreakpoint);
 
     return (
       <div className="MozartGridLayout">
         <Responsive
           {...this.props}
-          width={gridWidth}
+          width={width}
           layouts={defaultLayouts}
-          onBreakpointChange={onBreakpointChange}
+          onBreakpointChange={this.onBreakpointChange}
           breakpoints={defaultBreakpoints}
           cols={defaultCols}
         >
@@ -66,8 +87,12 @@ MozartGridLayout.propTypes = {
   rowHeight: number,
   gridComponents: array,
   dispatch: func,
-  size: string,
+  size: object,
   getGridWidth: func,
 };
 
-export default withSize()(MozartGridLayout);
+const mapStateToProps = state => ({
+  currentBreakpoint: state.currentBreakpoint,
+});
+
+export default connect(mapStateToProps)(withSize()(MozartGridLayout));
