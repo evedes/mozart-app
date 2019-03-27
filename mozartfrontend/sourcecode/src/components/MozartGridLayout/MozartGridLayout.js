@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { object, number, array } from 'prop-types';
+import { object, number, array, func, string } from 'prop-types';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
 import('./MozartGridLayout.scss');
@@ -15,12 +15,15 @@ class MozartGridLayout extends React.Component {
       defaultBreakpoints,
       defaultCols,
       gridComponents,
+      onBreakpointChange,
+      currentBreakpoint,
     } = this.props;
     return (
       <div className="MozartGridLayout">
         <ResponsiveGridLayout
           {...this.props}
           layouts={defaultLayouts}
+          onBreakpointChange={onBreakpointChange}
           breakpoints={defaultBreakpoints}
           cols={defaultCols}
         >
@@ -29,7 +32,7 @@ class MozartGridLayout extends React.Component {
               const { gridComponent: Component, key } = item;
               return (
                 <div key={key}>
-                  <Component />
+                  <Component currentBreakpoint={currentBreakpoint} />
                 </div>
               );
             })
@@ -43,9 +46,12 @@ class MozartGridLayout extends React.Component {
 MozartGridLayout.propTypes = {
   defaultLayouts: object,
   defaultBreakpoints: object,
+  currentBreakpoint: string,
+  onBreakpointChange: func,
   defaultCols: object,
   rowHeight: number,
   gridComponents: array,
+  dispatch: func,
 };
 
 export default MozartGridLayout;
