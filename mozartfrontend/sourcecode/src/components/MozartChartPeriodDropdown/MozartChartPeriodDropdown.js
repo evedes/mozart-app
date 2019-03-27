@@ -32,7 +32,9 @@ class MozartChartPeriodDropdown extends React.Component {
   };
 
   renderChartingPeriodText = () => {
-    const { chartingPeriod } = this.props;
+    const { chartingPeriod, currentBreakpoint } = this.props;
+    if (currentBreakpoint === 'sm') return null;
+
     switch (chartingPeriod) {
       case '10':
         return 'Last 10 minutes';
@@ -78,6 +80,7 @@ class MozartChartPeriodDropdown extends React.Component {
 
 MozartChartPeriodDropdown.propTypes = {
   chartingPeriod: string,
+  currentBreakpoint: string,
   dispatch: func,
 };
 
