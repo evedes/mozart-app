@@ -6,7 +6,6 @@ import { withSize } from 'react-sizeme';
 import { Responsive } from 'react-grid-layout';
 import { changeCurrentBreakpoint } from '../../actions/currentBreakpoint.actions';
 import { defaultBreakpoints, defaultCols } from './gridLayoutSettings';
-import MozartSpinner from '../MozartSpinner';
 
 import('./MozartGridLayout.scss');
 import('../../../node_modules/react-resizable/css/styles.css');
@@ -29,7 +28,6 @@ class MozartGridLayout extends React.Component {
       defaultBreakpoints,
       item => width <= item
     );
-    console.log('initialBreakpoint: ', initialBreakpoint);
     return this.onBreakpointChange(initialBreakpoint);
   };
 
@@ -47,10 +45,8 @@ class MozartGridLayout extends React.Component {
     } = this.props;
 
     if (_.isNil(currentBreakpoint)) {
-      return <MozartSpinner />;
+      return null;
     }
-
-    console.log('currentBreakpoint: ', currentBreakpoint);
 
     return (
       <div className="MozartGridLayout">
