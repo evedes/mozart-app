@@ -36,13 +36,13 @@ export const defaultLayouts = {
       x: 0,
       y: 4,
       w: 5,
-      h: 2,
-      minH: 2,
+      h: 3,
+      minH: 3,
       static: true,
     },
-    { i: 'NetworkInterfacesWidget', x: 0, y: 6, w: 1, h: 8, minH: 8 },
-    { i: 'SystemLoadAverageWidget', x: 0, y: 14, w: 5, h: 8, minH: 8 },
-    { i: 'MemoryStatzWidget', x: 0, y: 22, w: 5, h: 8, minH: 8 },
+    { i: 'NetworkInterfacesWidget', x: 0, y: 7, w: 1, h: 8, minH: 8 },
+    { i: 'SystemLoadAverageWidget', x: 0, y: 15, w: 5, h: 8, minH: 8 },
+    { i: 'MemoryStatzWidget', x: 0, y: 23, w: 5, h: 8, minH: 8 },
   ],
 };
 
