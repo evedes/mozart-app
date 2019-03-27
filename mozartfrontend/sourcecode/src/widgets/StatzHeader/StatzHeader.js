@@ -1,6 +1,7 @@
 import React from 'react';
 
 import MozartBox from '../../components/MozartBox';
+import MozartWidgetHeader from '../../components/MozartWidgetHeader';
 
 import './StatzHeader.scss';
 
@@ -35,6 +36,7 @@ class StatzHeader extends React.Component {
     const { units, hostname, cpuModel, totalMem, freeMem } = this.state;
     return (
       <MozartBox>
+        <MozartWidgetHeader title="System Information" />
         <div className="StatzHeader">
           <div>
             <strong>Hostname:</strong>

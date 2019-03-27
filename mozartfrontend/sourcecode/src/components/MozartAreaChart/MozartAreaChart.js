@@ -14,7 +14,7 @@ import {
   YAxis,
 } from 'recharts';
 
-import MozartChartHeader from '../MozartChartHeader';
+import MozartWidgetHeader from '../MozartWidgetHeader';
 import MozartChartContainer from '../MozartChartContainer';
 
 import { defaultColors } from './constants';
@@ -60,7 +60,7 @@ class MozartAreaChart extends React.Component {
   renderHeader = () => {
     const { title } = this.props;
     const { isChartHovered } = this.state;
-    return <MozartChartHeader title={title} isChartHovered={isChartHovered} />;
+    return <MozartWidgetHeader title={title} isChartHovered={isChartHovered} />;
   };
 
   renderChart = () => {
