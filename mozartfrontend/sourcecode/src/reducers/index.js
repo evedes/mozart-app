@@ -1,7 +1,7 @@
 const initialState = {
   chartingPeriod: '10',
   currentBreakpoint: null,
-  isDashboardLocked: false,
+  isDashboardLocked: true,
 };
 
 const reducer = (state = initialState, action) => {
