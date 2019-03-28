@@ -17,6 +17,8 @@ then
   echo "up";
   echo "down";
   echo "logs";
+  echo "mozart_backend";
+  echo "mozart_mongodb";
   exit $RETURN_ERROR;
 fi
 
@@ -34,6 +36,17 @@ then
         sudo sh -c "echo '127.0.0.1       mozart_backend\n' >> /etc/hosts";
     else
       echo 'No change required, found `127.0.0.1 mozart_backend` entry in /etc/hosts';
+    fi
+  exit $RETURN_SUCCESS;
+fi
+
+if [[ $(echo $ARGS_LINES | grep "add-mongodb-to-hosts") ]]
+then
+    if ! cat /etc/hosts | grep 'mozart_mongodb' > /dev/null; then
+        echo 'Adding `127.0.0.1 mozart_mongodb` entry to /etc/hosts';
+        sudo sh -c "echo '127.0.0.1       mozart_mongodb\n' >> /etc/hosts";
+    else
+      echo 'No change required, found `127.0.0.1 mozart_mongodb` entry in /etc/hosts';
     fi
   exit $RETURN_SUCCESS;
 fi
