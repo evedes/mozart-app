@@ -38,22 +38,18 @@ class MozartGridLayout extends React.Component {
 
   render() {
     const {
-      defaultLayouts,
+      layouts,
       gridComponents,
       currentBreakpoint,
       size: { width },
     } = this.props;
-
-    if (_.isNil(currentBreakpoint)) {
-      return null;
-    }
 
     return (
       <div className="MozartGridLayout">
         <Responsive
           {...this.props}
           width={width}
-          layouts={defaultLayouts}
+          layouts={layouts}
           onBreakpointChange={this.onBreakpointChange}
           breakpoints={defaultBreakpoints}
           cols={defaultCols}
@@ -75,7 +71,7 @@ class MozartGridLayout extends React.Component {
 }
 
 MozartGridLayout.propTypes = {
-  defaultLayouts: object,
+  layouts: object,
   defaultBreakpoints: object,
   currentBreakpoint: string,
   onBreakpointChange: func,
