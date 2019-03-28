@@ -1,14 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
-import './MozartHeader.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { string, func, bool } from 'prop-types';
+import { Button } from 'reactstrap';
+import { toggleDashboardLock } from '../../actions/toggleDashboardLock.actions';
 import MozartImage from '../MozartImage';
 import MozartChartPeriodDropdown from '../MozartChartPeriodDropdown';
+
+import './MozartHeader.scss';
 
 class MozartHeader extends React.Component {
   getFontSize = () => {
     const { currentBreakpoint } = this.props;
     return currentBreakpoint === 'sm' ? '20px' : '35px';
+  };
+
+  getLockIcon = () => {
+    const { isDashboardLocked } = this.props;
+    return isDashboardLocked ? 'lock' : 'unlock';
+  };
+
+  toggleDashboardLock = () => {
+    const { dispatch } = this.props;
+    dispatch(toggleDashboardLock());
   };
 
   render() {
@@ -20,6 +34,15 @@ class MozartHeader extends React.Component {
         </div>
         <div style={{ fontSize: this.getFontSize() }}>MOZART METRICS</div>
         <div className="ml-auto mr-3">
+          <Button
+            color="dark"
+            className="lock-button"
+            onClick={this.toggleDashboardLock}
+          >
+            <FontAwesomeIcon icon={this.getLockIcon()} />
+          </Button>
+        </div>
+        <div className="mr-3">
           <span className="mx-3">
             <MozartChartPeriodDropdown currentBreakpoint={currentBreakpoint} />
           </span>
@@ -31,10 +54,13 @@ class MozartHeader extends React.Component {
 
 MozartHeader.propTypes = {
   currentBreakpoint: string,
+  isDashboardLocked: bool,
+  dispatch: func,
 };
 
 const mapStateToProps = state => ({
   currentBreakpoint: state.currentBreakpoint,
+  isDashboardLocked: state.isDashboardLocked,
 });
 
 export default connect(mapStateToProps)(MozartHeader);

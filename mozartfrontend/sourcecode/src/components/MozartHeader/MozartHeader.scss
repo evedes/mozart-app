@@ -7,4 +7,12 @@
   width: 100%;
   margin: auto;
   z-index: 1;
+
+  .lock-button {
+    background-color: #1a1b1c;
+    &:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
 }
