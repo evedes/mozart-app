@@ -1,6 +1,7 @@
 const initialState = {
   chartingPeriod: '10',
   currentBreakpoint: null,
+  isDashboardLocked: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,6 +16,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentBreakpoint: action.currentBreakpoint,
+      };
+    case 'TOGGLE_DASHBOARD_LOCK':
+      return {
+        ...state,
+        isDashboardLocked: !state.isDashboardLocked,
       };
     default:
       return state;
