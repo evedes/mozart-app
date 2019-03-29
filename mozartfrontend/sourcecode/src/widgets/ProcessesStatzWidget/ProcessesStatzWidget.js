@@ -14,10 +14,14 @@ class ProcessesStatzWidget extends React.Component {
 
   componentDidMount() {
     this.fetchProcessesStatz();
-    this.processesStatzWidgetInterval = setInterval(
+    this.processesInterval = setInterval(
       () => this.fetchProcessesStatz(),
-      10 * 1000
+      60 * 1000
     );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.processesInterval);
   }
 
   fetchProcessesStatz = async () => {
@@ -29,10 +33,6 @@ class ProcessesStatzWidget extends React.Component {
     }).then(res => res.json());
     return this.setState({ processesStatz });
   };
-
-  componentDidUnMount() {
-    clearInterval(this.processesStatzWidgetInterval);
-  }
 
   render() {
     const { processesStatz } = this.state;
@@ -96,8 +96,8 @@ ProcessesStatzWidget.propTypes = {
   currentBreakpoint: string,
 };
 
-const mapStateToProps = state => ({
-  chartingPeriod: state.chartingPeriod,
+const mapStateToProps = ({ global = {} }) => ({
+  chartingPeriod: global.chartingPeriod,
 });
 
 export default connect(mapStateToProps)(ProcessesStatzWidget);
