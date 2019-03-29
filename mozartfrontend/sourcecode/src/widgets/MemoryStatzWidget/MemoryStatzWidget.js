@@ -32,7 +32,7 @@ class MemoryStatzWidget extends React.Component {
     const { chartingPeriod, dispatch } = this.props;
     this.chartingInterval = setInterval(
       () => loadMemoryStatz(chartingPeriod, false, dispatch),
-      3 * 1000
+      10 * 1000
     );
   };
 

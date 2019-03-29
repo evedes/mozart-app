@@ -33,7 +33,7 @@ class SystemLoadAverageWidget extends React.Component {
     const { chartingPeriod, dispatch } = this.props;
     this.chartingInterval = setInterval(
       () => loadCPUSystemAverage(chartingPeriod, false, dispatch),
-      3 * 1000
+      10 * 1000
     );
   };
 
