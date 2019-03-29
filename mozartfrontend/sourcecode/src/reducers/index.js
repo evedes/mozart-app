@@ -1,5 +1,6 @@
 const initialState = {
   chartingPeriod: '10',
+  changingChartingPeriod: false,
   currentBreakpoint: null,
   isDashboardLocked: true,
 };
