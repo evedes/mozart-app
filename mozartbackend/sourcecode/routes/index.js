@@ -21,9 +21,7 @@ const filterData = (doc, chartingPeriod) => {
     case '720':
       return doc.date.getSeconds() === 0 ? doc : null;
     case '1440':
-      return doc.date.getSeconds() === 0 && doc.date.getMinutes() % 10 === 0
-        ? doc
-        : null;
+      return doc.date.getSeconds() === 0 ? doc : null;
     default:
       return null;
   }
