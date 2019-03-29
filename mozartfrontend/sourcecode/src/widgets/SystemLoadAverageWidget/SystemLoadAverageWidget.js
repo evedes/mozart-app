@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { string } from 'prop-types';
+import { string, func, array, bool } from 'prop-types';
 import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
@@ -9,55 +9,67 @@ import MozartSpinner from '../../components/MozartSpinner';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
 import './SystemLoadAverageWidget.scss';
+import { loadCPUSystemAverage } from './actions/loadCPUSystemAverage.actions';
 
 class SystemLoadAverageWidget extends React.Component {
-  state = {
-    cpuLoadAvg: null,
-  };
-
   componentDidMount() {
-    this.fetchSystemLoadAvg();
-    this.systemLoadAverageWidgetInterval = setInterval(
-      () => this.fetchSystemLoadAvg(),
-      10 * 1000
-    );
+    const { chartingPeriod, dispatch } = this.props;
+    loadCPUSystemAverage(chartingPeriod, false, dispatch);
+    this.setInterval(chartingPeriod, dispatch);
   }
 
   componentDidUpdate(prevProps) {
     const { chartingPeriod } = this.props;
-    if (prevProps.chartingPeriod !== chartingPeriod) {
-      return this.fetchSystemLoadAvg();
+    if (chartingPeriod !== prevProps.chartingPeriod) {
+      this.resetInterval(true);
     }
   }
 
-  fetchSystemLoadAvg = async () => {
-    const { chartingPeriod } = this.props;
-    const cpuLoadAvg = await fetch(`api/cpuLoadAvg/${chartingPeriod}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
-    }).then(res => res.json());
-    return this.setState({ cpuLoadAvg });
-  };
-
-  componentDidUnMount() {
-    clearInterval(this.systemLoadAverageWidgetInterval);
+  componentWillUnmount() {
+    this.clearInterval();
   }
 
-  render() {
-    const { cpuLoadAvg } = this.state;
+  setInterval = () => {
+    const { chartingPeriod, dispatch } = this.props;
+    this.chartingInterval = setInterval(
+      () => loadCPUSystemAverage(chartingPeriod, false, dispatch),
+      3 * 1000
+    );
+  };
 
-    if (!cpuLoadAvg) {
+  resetInterval = changingChartingPeriod => {
+    const { chartingPeriod, dispatch } = this.props;
+    this.clearInterval();
+    this.setInterval();
+    loadCPUSystemAverage(chartingPeriod, changingChartingPeriod, dispatch);
+  };
+
+  clearInterval = () => {
+    clearInterval(this.chartingInterval);
+  };
+
+  render() {
+    const {
+      cpuSystemLoadAvg,
+      isFetching,
+      isLoaded,
+      changingChartingPeriod,
+    } = this.props;
+
+    if (
+      !cpuSystemLoadAvg ||
+      (isFetching && !isLoaded && changingChartingPeriod)
+    ) {
       return <MozartSpinner />;
     }
 
-    const chartData = _(cpuLoadAvg)
+    const chartData = _(cpuSystemLoadAvg)
       .map(item => ({
         ...item,
         date: moment(item.date).format('HH:mm:ss'),
       }))
       .value();
+
     return (
       <MozartBox>
         <MozartAreaChart
@@ -72,10 +84,19 @@ class SystemLoadAverageWidget extends React.Component {
 
 SystemLoadAverageWidget.propTypes = {
   chartingPeriod: string,
+  cpuSystemLoadAvg: array,
+  dispatch: func,
+  isFetching: bool,
+  isLoaded: bool,
+  changingChartingPeriod: bool,
 };
 
-const mapStateToProps = state => ({
-  chartingPeriod: state.chartingPeriod,
+const mapStateToProps = ({ global = {}, cpuSystemLoadAvg = {} }) => ({
+  chartingPeriod: global.chartingPeriod,
+  changingChartingPeriod: cpuSystemLoadAvg.changingChartingPeriod,
+  cpuSystemLoadAvg: cpuSystemLoadAvg.data,
+  isFetching: cpuSystemLoadAvg.isFetching,
+  isLoaded: cpuSystemLoadAvg.isLoaded,
 });
 
 export default connect(mapStateToProps)(SystemLoadAverageWidget);
