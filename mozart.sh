@@ -16,7 +16,10 @@ then
   echo "build";
   echo "up";
   echo "down";
+  echo "react";
   echo "logs";
+  echo "mozart_backend";
+  echo "mozart_mongodb";
   exit $RETURN_ERROR;
 fi
 
@@ -34,6 +37,17 @@ then
         sudo sh -c "echo '127.0.0.1       mozart_backend\n' >> /etc/hosts";
     else
       echo 'No change required, found `127.0.0.1 mozart_backend` entry in /etc/hosts';
+    fi
+  exit $RETURN_SUCCESS;
+fi
+
+if [[ $(echo $ARGS_LINES | grep "add-mongodb-to-hosts") ]]
+then
+    if ! cat /etc/hosts | grep 'mozart_mongodb' > /dev/null; then
+        echo 'Adding `127.0.0.1 mozart_mongodb` entry to /etc/hosts';
+        sudo sh -c "echo '127.0.0.1       mozart_mongodb\n' >> /etc/hosts";
+    else
+      echo 'No change required, found `127.0.0.1 mozart_mongodb` entry in /etc/hosts';
     fi
   exit $RETURN_SUCCESS;
 fi
@@ -68,6 +82,13 @@ then
   SERVICE_DOWN=1;
 fi
 
+REACT=0;
+if [[ $(echo $ARGS_LINES | grep "react") ]]
+then
+  echo "Option: react [ACTIVE]";
+  REACT=1;
+fi
+
 LOGS=0;
 if [[ $(echo $ARGS_LINES | grep "logs") ]]
 then
@@ -81,6 +102,8 @@ fi
 # --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
+export HOST_NAME=$(hostname);
+
 # build
 if [[ "$BUILD" = "1" ]]
 then
@@ -111,6 +134,32 @@ then
     # build for development
     docker-compose -f docker-compose.yml -f docker-compose.develop.yml up -d;
   fi
+fi
+
+# open react
+if [[ "$REACT" = "1" ]]
+then
+    echo "------------------------------------------------------------";
+    echo "[REACT] Open REACT app in browser"
+    echo "------------------------------------------------------------";
+
+    printf "Waiting for REACT PORT to be available ";
+    while [ $(nc -zvn 127.0.0.1 80 &>/dev/null && echo "1" || echo "0") -eq 0 ]
+    do
+        printf ".";
+        sleep 1;
+    done
+    echo "";
+
+    printf "Waiting for REACT HTTP response ";
+    while [ $(curl --silent http://localhost:80 &>/dev/null && echo "1" || echo "0") -eq 0 ]
+    do
+        printf ".";
+        sleep 1;
+    done
+    echo "";
+
+    open http://localhost:80;
 fi
 
 # docker-compose logs

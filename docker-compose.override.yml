@@ -13,6 +13,7 @@ services:
       - mozart-network
   # PRODUCTION: mozart_backend
   mozart_backend:
+    hostname: ${HOST_NAME}
     image: mozart_backend_production
     container_name: mozart_backend_production
     build:
