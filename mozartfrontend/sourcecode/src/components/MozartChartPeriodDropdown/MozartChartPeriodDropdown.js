@@ -84,8 +84,8 @@ MozartChartPeriodDropdown.propTypes = {
   dispatch: func,
 };
 
-const mapStateToProps = state => ({
-  chartingPeriod: state.chartingPeriod,
+const mapStateToProps = ({ global = {} }) => ({
+  chartingPeriod: global.chartingPeriod,
 });
 
 export default connect(mapStateToProps)(MozartChartPeriodDropdown);

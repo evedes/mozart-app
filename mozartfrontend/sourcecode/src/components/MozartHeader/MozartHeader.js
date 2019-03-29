@@ -58,9 +58,9 @@ MozartHeader.propTypes = {
   dispatch: func,
 };
 
-const mapStateToProps = state => ({
-  currentBreakpoint: state.currentBreakpoint,
-  isDashboardLocked: state.isDashboardLocked,
+const mapStateToProps = ({ global = {} }) => ({
+  currentBreakpoint: global.currentBreakpoint,
+  isDashboardLocked: global.isDashboardLocked,
 });
 
 export default connect(mapStateToProps)(MozartHeader);

@@ -83,8 +83,8 @@ MozartGridLayout.propTypes = {
   getGridWidth: func,
 };
 
-const mapStateToProps = state => ({
-  currentBreakpoint: state.currentBreakpoint,
+const mapStateToProps = ({ global = {} }) => ({
+  currentBreakpoint: global.currentBreakpoint,
 });
 
 export default connect(mapStateToProps)(withSize()(MozartGridLayout));

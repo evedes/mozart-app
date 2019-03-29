@@ -85,8 +85,8 @@ StatzGrid.propTypes = {
   isDashboardLocked: bool,
 };
 
-const mapStateToProps = state => ({
-  isDashboardLocked: state.isDashboardLocked,
+const mapStateToProps = ({ global = {} }) => ({
+  isDashboardLocked: global.isDashboardLocked,
 });
 
 export default connect(mapStateToProps)(StatzGrid);
