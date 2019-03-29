@@ -144,7 +144,7 @@ then
     echo "------------------------------------------------------------";
 
     printf "Waiting for REACT PORT to be available ";
-    while [ $(nc -zvn 127.0.0.1 80 &>/dev/null && echo "1" || echo "0") -eq 0 ]
+    while [ $(nc -zvn 127.0.0.1 80 >/dev/null 2>&1 && echo "1" || echo "0") -eq 0 ]
     do
         printf ".";
         sleep 1;
@@ -152,7 +152,7 @@ then
     echo "";
 
     printf "Waiting for REACT HTTP response ";
-    while [ $(curl --silent http://localhost:80 &>/dev/null && echo "1" || echo "0") -eq 0 ]
+    while [ $(curl --silent http://localhost:80 >/dev/null 2>&1 && echo "1" || echo "0") -eq 0 ]
     do
         printf ".";
         sleep 1;
