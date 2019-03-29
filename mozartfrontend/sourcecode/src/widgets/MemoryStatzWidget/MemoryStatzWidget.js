@@ -1,59 +1,61 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, func, array, bool } from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 
 import MozartBox from '../../components/MozartBox';
 import MozartSpinner from '../../components/MozartSpinner';
 import MozartAreaChart from '../../components/MozartAreaChart';
-
+import { loadMemoryStatz } from './actions/loadMemoryStatz.actions';
 import './MemoryStatzWidget.scss';
 
 class MemoryStatzWidget extends React.Component {
-  state = {
-    memoryStatz: null,
-  };
-
   componentDidMount() {
-    this.fetchMemoryStatz();
-    this.memoryStatzWidgetInterval = setInterval(
-      () => this.fetchMemoryStatz(),
-      10 * 1000
+    const { chartingPeriod, dispatch } = this.props;
+    loadMemoryStatz(chartingPeriod, false, dispatch);
+    this.setInterval(chartingPeriod, dispatch);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { chartingPeriod } = this.props;
+    if (chartingPeriod !== prevProps.chartingPeriod) {
+      this.resetInterval(true);
+    }
+  }
+
+  componentWillUnmount() {
+    this.clearInterval();
+  }
+
+  setInterval = () => {
+    const { chartingPeriod, dispatch } = this.props;
+    this.chartingInterval = setInterval(
+      () => loadMemoryStatz(chartingPeriod, false, dispatch),
+      3 * 1000
     );
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { chartingPeriod } = this.props;
-    const { memoryStatz } = this.state;
-
-    if (prevProps.chartingPeriod !== chartingPeriod) {
-      return this.fetchMemoryStatz();
-    }
-    if (prevState.memoryStatz !== memoryStatz) {
-      return true;
-    }
-  }
-
-  fetchMemoryStatz = async () => {
-    const { chartingPeriod } = this.props;
-    const memoryStatz = await fetch(`api/memoryStatz/${chartingPeriod}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
-    }).then(res => res.json());
-    return this.setState({ memoryStatz });
   };
 
-  componentDidUnMount() {
-    clearInterval(this.memoryStatzWidgetInterval);
-  }
+  resetInterval = changingChartingPeriod => {
+    const { chartingPeriod, dispatch } = this.props;
+    this.clearInterval();
+    this.setInterval();
+    loadMemoryStatz(chartingPeriod, changingChartingPeriod, dispatch);
+  };
+
+  clearInterval = () => {
+    clearInterval(this.chartingInterval);
+  };
 
   render() {
-    const { memoryStatz } = this.state;
+    const {
+      memoryStatz,
+      isFetching,
+      isLoaded,
+      changingChartingPeriod,
+    } = this.props;
 
-    if (!memoryStatz) {
+    if (!memoryStatz || (isFetching && !isLoaded && changingChartingPeriod)) {
       return <MozartSpinner />;
     }
 
@@ -91,10 +93,19 @@ class MemoryStatzWidget extends React.Component {
 
 MemoryStatzWidget.propTypes = {
   chartingPeriod: string,
+  memoryStatz: array,
+  dispatch: func,
+  isFetching: bool,
+  isLoaded: bool,
+  changingChartingPeriod: bool,
 };
 
-const mapStateToProps = state => ({
-  chartingPeriod: state.chartingPeriod,
+const mapStateToProps = ({ global = {}, memoryStatz = {} }) => ({
+  chartingPeriod: global.chartingPeriod,
+  changingChartingPeriod: memoryStatz.changingChartingPeriod,
+  memoryStatz: memoryStatz.data,
+  isFetching: memoryStatz.isFetching,
+  isLoaded: memoryStatz.isLoaded,
 });
 
 export default connect(mapStateToProps)(MemoryStatzWidget);

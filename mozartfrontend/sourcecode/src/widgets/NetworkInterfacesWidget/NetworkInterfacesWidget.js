@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, array, func, bool } from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -8,52 +8,56 @@ import MozartBox from '../../components/MozartBox';
 import MozartSpinner from '../../components/MozartSpinner';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
+import { loadNetworkStatz } from './actions/loadNetworkStatz.actions';
+
 import './NetworkInterfacesWidget.scss';
 
 class NetworkInterfacesWidget extends React.Component {
-  state = {
-    networkStatz: null,
-  };
-
   componentDidMount() {
-    this.fetchNetworkStatz();
-    this.networkInterfacesWidgetInterval = setInterval(
-      () => this.fetchNetworkStatz(),
-      10 * 1000
+    const { chartingPeriod, dispatch } = this.props;
+    loadNetworkStatz(chartingPeriod, false, dispatch);
+    this.setInterval(chartingPeriod, dispatch);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { chartingPeriod } = this.props;
+    if (chartingPeriod !== prevProps.chartingPeriod) {
+      this.resetInterval(true);
+    }
+  }
+
+  componentWillUnmount() {
+    this.clearInterval();
+  }
+
+  setInterval = () => {
+    const { chartingPeriod, dispatch } = this.props;
+    this.chartingInterval = setInterval(
+      () => loadNetworkStatz(chartingPeriod, false, dispatch),
+      3 * 1000
     );
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { chartingPeriod } = this.props;
-    const { networkStatz } = this.state;
-
-    if (prevProps.chartingPeriod !== chartingPeriod) {
-      return this.fetchNetworkStatz();
-    }
-    if (prevState.networkStatz !== networkStatz) {
-      return true;
-    }
-  }
-
-  fetchNetworkStatz = async () => {
-    const { chartingPeriod } = this.props;
-    const networkStatz = await fetch(`api/networkStatz/${chartingPeriod}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
-    }).then(res => res.json());
-    return this.setState({ networkStatz });
   };
 
-  componentDidUnMount() {
-    clearInterval(this.networkInterfacesWidgetInterval);
-  }
+  resetInterval = changingChartingPeriod => {
+    const { chartingPeriod, dispatch } = this.props;
+    this.clearInterval();
+    this.setInterval();
+    loadNetworkStatz(chartingPeriod, changingChartingPeriod, dispatch);
+  };
+
+  clearInterval = () => {
+    clearInterval(this.chartingInterval);
+  };
 
   render() {
-    const { networkStatz } = this.state;
+    const {
+      networkStatz,
+      isFetching,
+      isLoaded,
+      changingChartingPeriod,
+    } = this.props;
 
-    if (!networkStatz) {
+    if (!networkStatz || (isFetching && !isLoaded && changingChartingPeriod)) {
       return <MozartSpinner />;
     }
 
@@ -83,10 +87,19 @@ class NetworkInterfacesWidget extends React.Component {
 
 NetworkInterfacesWidget.propTypes = {
   chartingPeriod: string,
+  networkStatz: array,
+  dispatch: func,
+  changingChartingPeriod: bool,
+  isFetching: bool,
+  isLoaded: bool,
 };
 
-const mapStateToProps = state => ({
-  chartingPeriod: state.chartingPeriod,
+const mapStateToProps = ({ global = {}, networkStatz = {} }) => ({
+  chartingPeriod: global.chartingPeriod,
+  changingChartingPeriod: networkStatz.changingChartingPeriod,
+  networkStatz: networkStatz.data,
+  isFetching: networkStatz.isFetching,
+  isLoaded: networkStatz.isLoaded,
 });
 
 export default connect(mapStateToProps)(NetworkInterfacesWidget);
