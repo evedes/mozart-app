@@ -78,6 +78,7 @@ class MozartAreaChart extends React.Component {
             onMouseLeave={this.onMouseLeave}
             onFocus={() => {}}
           >
+            ongo
             {_(yKeys)
               .map((lineKey, i) => (
                 <Area

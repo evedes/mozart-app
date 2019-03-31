@@ -72,10 +72,10 @@ class MemoryStatzWidget extends React.Component {
     return (
       <MozartBox>
         <MozartAreaChart
-          title="RAM Usage Widget (GB)"
+          title="RAM Usage Widget (MB)"
           data={chartData}
           xKey="date"
-          tooltipUnit="GB"
+          tooltipUnit="MB"
           tooltipCursorColor="#3200E5"
           colors={[
             '#3200E5',
