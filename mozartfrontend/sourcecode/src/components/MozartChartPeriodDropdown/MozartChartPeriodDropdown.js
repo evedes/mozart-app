@@ -37,13 +37,13 @@ class MozartChartPeriodDropdown extends React.Component {
 
     switch (chartingPeriod) {
       case '10':
-        return 'Last 10 minutes';
+        return 'Last 10m';
       case '60':
-        return 'Last 01 hour';
+        return 'Last 01h';
       case '720':
-        return 'Last 12 hours';
+        return 'Last 12h';
       case '1440':
-        return 'Last 24 hours';
+        return 'Last 24h';
       default:
         return null;
     }
