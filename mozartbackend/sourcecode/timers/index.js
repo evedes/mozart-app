@@ -6,9 +6,11 @@ const CpuLoadAvgModel = require('../models/cpuLoadAvg');
 const NetworkStatzModel = require('../models/networkStatz');
 const MemoryStatzModel = require('../models/memoryStatz');
 
-// MEASURE SYSTEM LOAD AVG (1min, 5min, 15min)
+const startTimers = fn => setInterval(() => fn(), 500);
 
-setInterval(() => {
+const timers = () => {
+  // MEASURE SYSTEM LOAD AVG (1min, 5min, 15min)
+
   const osLoadAvg = os.loadavg();
   const cpuLoadAvg = new CpuLoadAvgModel({
     oneMin: osLoadAvg[0],
@@ -19,11 +21,9 @@ setInterval(() => {
   cpuLoadAvg.save(function(err) {
     if (err) return console.err(err);
   });
-}, 300);
 
-// MEASURE NETWORK STATS
+  // MEASURE NETWORK STATS
 
-setInterval(() => {
   si.networkStats().then(data => {
     const networkStatz = new NetworkStatzModel({
       ...data[0],
@@ -33,11 +33,9 @@ setInterval(() => {
       if (err) return console.err(err);
     });
   });
-}, 300);
 
-// MEASURE MEMORY STATS
+  // MEASURE MEMORY STATS
 
-setInterval(() => {
   si.mem().then(data => {
     const { total, free, used, active, available } = data;
     const memoryStatz = new MemoryStatzModel({
@@ -52,4 +50,6 @@ setInterval(() => {
       if (err) return console.err(err);
     });
   });
-}, 300);
+};
+
+startTimers(timers);
