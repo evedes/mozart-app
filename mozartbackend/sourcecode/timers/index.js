@@ -19,7 +19,7 @@ setInterval(() => {
   cpuLoadAvg.save(function(err) {
     if (err) return console.err(err);
   });
-}, 1000);
+}, 300);
 
 // MEASURE NETWORK STATS
 
@@ -33,7 +33,7 @@ setInterval(() => {
       if (err) return console.err(err);
     });
   });
-}, 1000);
+}, 300);
 
 // MEASURE MEMORY STATS
 
@@ -52,4 +52,4 @@ setInterval(() => {
       if (err) return console.err(err);
     });
   });
-}, 1000);
+}, 300);

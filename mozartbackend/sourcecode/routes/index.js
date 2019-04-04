@@ -8,25 +8,18 @@ const si = require('systeminformation');
 const _ = require('lodash');
 
 require('../timers');
+
+// MODELS
 const cpuLoadAvgModel = require('../models/cpuLoadAvg');
 const networkStatzModel = require('../models/networkStatz');
 const memoryStatzModel = require('../models/memoryStatz');
 
-const filterData = (doc, chartingPeriod) => {
-  switch (chartingPeriod) {
-    case '10':
-      return doc.date.getSeconds() % 10 === 0 ? doc : null;
-    case '60':
-      return doc.date.getSeconds() % 20 === 0 ? doc : null;
-    case '720':
-      return doc.date.getSeconds() === 0 ? doc : null;
-    case '1440':
-      return doc.date.getSeconds() === 0 ? doc : null;
-    default:
-      return null;
-  }
-};
+// AGGREGATES AUX FUNCTIONS
+const { matchGroup } = require('../libs/chartsAggregateAux');
+const { sortGroup } = require('../libs/chartsAggregateAux');
+const { aggregateById } = require('../libs/chartsAggregateAux');
 
+// ROUTER ENDPOINTS
 router.get('/cpuLoadAvg/:chartingPeriod', async (req, res) => {
   const { chartingPeriod } = req.params;
   const endDate = moment();
@@ -35,24 +28,70 @@ router.get('/cpuLoadAvg/:chartingPeriod', async (req, res) => {
     .startOf('minute');
 
   await cpuLoadAvgModel
-    .find({
-      date: {
-        $lte: endDate,
-        $gte: startDate,
+    .aggregate([
+      {
+        $match: matchGroup(startDate, endDate),
       },
-    })
+      {
+        $group: {
+          _id: aggregateById(chartingPeriod),
+          fifteenMin: { $avg: '$fifteenMin' },
+          fiveMin: { $avg: '$fiveMin' },
+          oneMin: { $avg: '$oneMin' },
+        },
+      },
+      {
+        $sort: sortGroup(chartingPeriod),
+      },
+      {
+        $project: {
+          fifteenMin: 1,
+          fiveMin: 1,
+          oneMin: 1,
+        },
+      },
+    ])
     .exec((err, docs) => {
       const averageLoads = _(docs)
         .map(doc => {
-          const { oneMin, fiveMin, fifteenMin, date } = doc;
-          return {
-            fifteenMin: _.round(_.toNumber(fifteenMin), 3),
-            fiveMin: _.round(_.toNumber(fiveMin), 3),
-            oneMin: _.round(_.toNumber(oneMin), 3),
-            date,
-          };
+          const { _id: id, oneMin, fiveMin, fifteenMin } = doc;
+          switch (chartingPeriod) {
+            case '10':
+              return {
+                fifteenMin: _.round(_.toNumber(fifteenMin), 3),
+                fiveMin: _.round(_.toNumber(fiveMin), 3),
+                oneMin: _.round(_.toNumber(oneMin), 3),
+                date: moment(id).toDate(),
+              };
+            case '60':
+              if (id.second % 5 === 0) {
+                return {
+                  fifteenMin: _.round(_.toNumber(fifteenMin), 3),
+                  fiveMin: _.round(_.toNumber(fiveMin), 3),
+                  oneMin: _.round(_.toNumber(oneMin), 3),
+                  date: moment(id).toDate(),
+                };
+              }
+              return null;
+            case '720':
+              if (id.second % 15 === 0) {
+                return {
+                  fifteenMin: _.round(_.toNumber(fifteenMin), 3),
+                  fiveMin: _.round(_.toNumber(fiveMin), 3),
+                  oneMin: _.round(_.toNumber(oneMin), 3),
+                  date: moment(id).toDate(),
+                };
+              }
+              return null;
+            default:
+              return {
+                fifteenMin: _.round(_.toNumber(fifteenMin), 3),
+                fiveMin: _.round(_.toNumber(fiveMin), 3),
+                oneMin: _.round(_.toNumber(oneMin), 3),
+                date: moment(id).toDate(),
+              };
+          }
         })
-        .filter(doc => filterData(doc, chartingPeriod))
         .compact()
         .value();
       res.json(averageLoads);
@@ -67,24 +106,65 @@ router.get('/networkStatz/:chartingPeriod', async (req, res) => {
     .startOf('minute');
 
   await networkStatzModel
-    .find({
-      date: {
-        $lte: endDate,
-        $gte: startDate,
+    .aggregate([
+      {
+        $match: matchGroup(startDate, endDate),
       },
-    })
+      {
+        $group: {
+          _id: aggregateById(chartingPeriod),
+          rx_sec: { $avg: '$rx_sec' },
+          tx_sec: { $avg: '$tx_sec' },
+        },
+      },
+      {
+        $sort: sortGroup(chartingPeriod),
+      },
+      {
+        $project: {
+          rx_sec: 1,
+          tx_sec: 1,
+          date: 1,
+        },
+      },
+    ])
     .exec((err, docs) => {
       const networkStatz = _(docs)
         .map(doc => {
-          const { rx_sec: rxSec, tx_sec: txSec, iface, date } = doc;
-          return {
-            rx_sec: _.round(-rxSec / 1024, 3),
-            tx_sec: _.round(txSec / 1024, 3),
-            iface,
-            date,
-          };
+          const { _id: id, rx_sec: rxSec, tx_sec: txSec } = doc;
+          switch (chartingPeriod) {
+            case '10':
+              return {
+                rx_sec: _.round(-rxSec / 1024, 3),
+                tx_sec: _.round(txSec / 1024, 3),
+                date: moment(id).toDate(),
+              };
+            case '60':
+              if (id.second % 5 === 0) {
+                return {
+                  rx_sec: _.round(-rxSec / 1024, 3),
+                  tx_sec: _.round(txSec / 1024, 3),
+                  date: moment(id).toDate(),
+                };
+              }
+              return null;
+            case '720':
+              if (id.second % 15 === 0) {
+                return {
+                  rx_sec: _.round(-rxSec / 1024, 3),
+                  tx_sec: _.round(txSec / 1024, 3),
+                  date: moment(id).toDate(),
+                };
+              }
+              return null;
+            default:
+              return {
+                rx_sec: _.round(-rxSec / 1024, 3),
+                tx_sec: _.round(txSec / 1024, 3),
+                date: moment(id).toDate(),
+              };
+          }
         })
-        .filter(doc => filterData(doc, chartingPeriod))
         .compact()
         .value();
       res.json(networkStatz);
@@ -99,26 +179,83 @@ router.get('/memoryStatz/:chartingPeriod', async (req, res) => {
     .startOf('minute');
 
   await memoryStatzModel
-    .find({
-      date: {
-        $lte: endDate,
-        $gte: startDate,
+    .aggregate([
+      {
+        $match: matchGroup(startDate, endDate),
       },
-    })
+      {
+        $group: {
+          _id: aggregateById(chartingPeriod),
+          available: { $avg: '$available' },
+          active: { $avg: '$active' },
+          used: { $avg: '$used' },
+          free: { $avg: '$free' },
+          total: { $avg: '$total' },
+        },
+      },
+      {
+        $sort: sortGroup(chartingPeriod),
+      },
+      {
+        $project: {
+          available: 1,
+          active: 1,
+          used: 1,
+          free: 1,
+          total: 1,
+          date: 1,
+        },
+      },
+    ])
     .exec((err, docs) => {
       const memoryStatz = _(docs)
         .map(doc => {
-          const { total, free, used, date, active, available } = doc;
-          return {
-            available: _.round(available / 1024 / 1024, 3),
-            active: _.round(active / 1024 / 1024, 3),
-            used: _.round(used / 1024 / 1024, 3),
-            free: _.round(free / 1024 / 1024, 3),
-            total: _.round(total / 1024 / 1024, 3),
-            date,
-          };
+          const { _id: id, total, free, used, active, available } = doc;
+          switch (chartingPeriod) {
+            case '10':
+              return {
+                available: _.round(available / 1024 / 1024, 3),
+                active: _.round(active / 1024 / 1024, 3),
+                used: _.round(used / 1024 / 1024, 3),
+                free: _.round(free / 1024 / 1024, 3),
+                total: _.round(total / 1024 / 1024, 3),
+                date: moment(id).toDate(),
+              };
+            case '60':
+              if (id.second % 5 === 0) {
+                return {
+                  available: _.round(available / 1024 / 1024, 3),
+                  active: _.round(active / 1024 / 1024, 3),
+                  used: _.round(used / 1024 / 1024, 3),
+                  free: _.round(free / 1024 / 1024, 3),
+                  total: _.round(total / 1024 / 1024, 3),
+                  date: moment(id).toDate(),
+                };
+              }
+              return null;
+            case '720':
+              if (id.second % 15 === 0) {
+                return {
+                  available: _.round(available / 1024 / 1024, 3),
+                  active: _.round(active / 1024 / 1024, 3),
+                  used: _.round(used / 1024 / 1024, 3),
+                  free: _.round(free / 1024 / 1024, 3),
+                  total: _.round(total / 1024 / 1024, 3),
+                  date: moment(id).toDate(),
+                };
+              }
+              return null;
+            default:
+              return {
+                available: _.round(available / 1024 / 1024, 3),
+                active: _.round(active / 1024 / 1024, 3),
+                used: _.round(used / 1024 / 1024, 3),
+                free: _.round(free / 1024 / 1024, 3),
+                total: _.round(total / 1024 / 1024, 3),
+                date: moment(id).toDate(),
+              };
+          }
         })
-        .filter(doc => filterData(doc, chartingPeriod))
         .compact()
         .value();
       res.json(memoryStatz);
