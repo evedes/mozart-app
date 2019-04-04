@@ -1,5 +1,6 @@
 const initialState = {
   chartingPeriod: '10',
+  pollingPeriod: '5',
   changingChartingPeriod: false,
   currentBreakpoint: null,
   isDashboardLocked: true,
@@ -12,6 +13,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         chartingPeriod: action.chartingPeriod,
+      };
+    case 'CHANGE_POLLING_PERIOD':
+      return {
+        ...state,
+        pollingPeriod: action.pollingPeriod,
       };
     case 'CHANGE_CURRENT_BREAKPOINT':
       return {
