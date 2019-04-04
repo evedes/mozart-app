@@ -34,7 +34,7 @@ class MozartHeader extends React.Component {
           <MozartImage imageName="mozart-logo" height="35" />
         </div>
         <div style={{ fontSize: this.getFontSize() }}>MOZART METRICS</div>
-        <div className="ml-auto mr-3">
+        <div className="ml-auto">
           <Button
             color="dark"
             className="lock-button"
