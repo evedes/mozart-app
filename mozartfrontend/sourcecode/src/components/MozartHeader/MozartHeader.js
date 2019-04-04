@@ -6,6 +6,7 @@ import { Button } from 'reactstrap';
 import { toggleDashboardLock } from '../../actions/toggleDashboardLock.actions';
 import MozartImage from '../MozartImage';
 import MozartChartPeriodDropdown from '../MozartChartPeriodDropdown';
+import MozartPollingPeriodDropdown from '../MozartPollingPeriodDropdown';
 
 import './MozartHeader.scss';
 
@@ -42,10 +43,11 @@ class MozartHeader extends React.Component {
             <FontAwesomeIcon icon={this.getLockIcon()} />
           </Button>
         </div>
+        <div className="mx-3">
+          <MozartPollingPeriodDropdown currentBreakpoint={currentBreakpoint} />
+        </div>
         <div className="mr-3">
-          <span className="mx-3">
-            <MozartChartPeriodDropdown currentBreakpoint={currentBreakpoint} />
-          </span>
+          <MozartChartPeriodDropdown currentBreakpoint={currentBreakpoint} />
         </div>
       </div>
     );
