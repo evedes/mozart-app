@@ -19,8 +19,11 @@ class SystemLoadAverageWidget extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { chartingPeriod } = this.props;
+    const { chartingPeriod, pollingPeriod } = this.props;
     if (chartingPeriod !== prevProps.chartingPeriod) {
+      this.resetInterval(true);
+    }
+    if (pollingPeriod !== prevProps.pollingPeriod) {
       this.resetInterval(true);
     }
   }
@@ -30,10 +33,10 @@ class SystemLoadAverageWidget extends React.Component {
   }
 
   setInterval = () => {
-    const { chartingPeriod, dispatch } = this.props;
+    const { chartingPeriod, dispatch, pollingPeriod } = this.props;
     this.chartingInterval = setInterval(
       () => loadCPUSystemAverage(chartingPeriod, false, dispatch),
-      5 * 1000
+      pollingPeriod * 1000
     );
   };
 
@@ -84,6 +87,7 @@ class SystemLoadAverageWidget extends React.Component {
 
 SystemLoadAverageWidget.propTypes = {
   chartingPeriod: string,
+  pollingPeriod: string,
   cpuSystemLoadAvg: array,
   dispatch: func,
   isFetching: bool,
@@ -93,6 +97,7 @@ SystemLoadAverageWidget.propTypes = {
 
 const mapStateToProps = ({ global = {}, cpuSystemLoadAvg = {} }) => ({
   chartingPeriod: global.chartingPeriod,
+  pollingPeriod: global.pollingPeriod,
   changingChartingPeriod: cpuSystemLoadAvg.changingChartingPeriod,
   cpuSystemLoadAvg: cpuSystemLoadAvg.data,
   isFetching: cpuSystemLoadAvg.isFetching,

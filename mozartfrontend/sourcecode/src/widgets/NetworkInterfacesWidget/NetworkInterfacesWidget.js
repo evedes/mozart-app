@@ -20,8 +20,12 @@ class NetworkInterfacesWidget extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { chartingPeriod } = this.props;
+    const { chartingPeriod, pollingPeriod } = this.props;
+
     if (chartingPeriod !== prevProps.chartingPeriod) {
+      this.resetInterval(true);
+    }
+    if (pollingPeriod !== prevProps.pollingPeriod) {
       this.resetInterval(true);
     }
   }
@@ -31,10 +35,10 @@ class NetworkInterfacesWidget extends React.Component {
   }
 
   setInterval = () => {
-    const { chartingPeriod, dispatch } = this.props;
+    const { chartingPeriod, dispatch, pollingPeriod } = this.props;
     this.chartingInterval = setInterval(
       () => loadNetworkStatz(chartingPeriod, false, dispatch),
-      5 * 1000
+      pollingPeriod * 1000
     );
   };
 
@@ -87,6 +91,7 @@ class NetworkInterfacesWidget extends React.Component {
 
 NetworkInterfacesWidget.propTypes = {
   chartingPeriod: string,
+  pollingPeriod: string,
   networkStatz: array,
   dispatch: func,
   changingChartingPeriod: bool,
@@ -96,6 +101,7 @@ NetworkInterfacesWidget.propTypes = {
 
 const mapStateToProps = ({ global = {}, networkStatz = {} }) => ({
   chartingPeriod: global.chartingPeriod,
+  pollingPeriod: global.pollingPeriod,
   changingChartingPeriod: networkStatz.changingChartingPeriod,
   networkStatz: networkStatz.data,
   isFetching: networkStatz.isFetching,

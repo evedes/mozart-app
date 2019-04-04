@@ -18,8 +18,11 @@ class MemoryStatzWidget extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { chartingPeriod } = this.props;
+    const { chartingPeriod, pollingPeriod } = this.props;
     if (chartingPeriod !== prevProps.chartingPeriod) {
+      this.resetInterval(true);
+    }
+    if (pollingPeriod !== prevProps.pollingPeriod) {
       this.resetInterval(true);
     }
   }
@@ -29,10 +32,10 @@ class MemoryStatzWidget extends React.Component {
   }
 
   setInterval = () => {
-    const { chartingPeriod, dispatch } = this.props;
+    const { chartingPeriod, dispatch, pollingPeriod } = this.props;
     this.chartingInterval = setInterval(
       () => loadMemoryStatz(chartingPeriod, false, dispatch),
-      10 * 1000
+      pollingPeriod * 1000
     );
   };
 
@@ -93,6 +96,7 @@ class MemoryStatzWidget extends React.Component {
 
 MemoryStatzWidget.propTypes = {
   chartingPeriod: string,
+  pollingPeriod: string,
   memoryStatz: array,
   dispatch: func,
   isFetching: bool,
@@ -101,6 +105,7 @@ MemoryStatzWidget.propTypes = {
 };
 
 const mapStateToProps = ({ global = {}, memoryStatz = {} }) => ({
+  pollingPeriod: global.pollingPeriod,
   chartingPeriod: global.chartingPeriod,
   changingChartingPeriod: memoryStatz.changingChartingPeriod,
   memoryStatz: memoryStatz.data,
