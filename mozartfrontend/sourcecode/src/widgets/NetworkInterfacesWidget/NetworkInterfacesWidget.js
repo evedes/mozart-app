@@ -34,7 +34,7 @@ class NetworkInterfacesWidget extends React.Component {
     const { chartingPeriod, dispatch } = this.props;
     this.chartingInterval = setInterval(
       () => loadNetworkStatz(chartingPeriod, false, dispatch),
-      10 * 1000
+      5 * 1000
     );
   };
 
