@@ -5,6 +5,14 @@ import {
   faClock,
   faLock,
   faUnlock,
+  faSyncAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
-export default library.add(faSpinner, faCaretDown, faClock, faLock, faUnlock);
+export default library.add(
+  faSpinner,
+  faCaretDown,
+  faClock,
+  faLock,
+  faUnlock,
+  faSyncAlt
+);
