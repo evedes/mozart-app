@@ -1,6 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+
 import ReactDOM from 'react-dom';
 import Routes from './routes';
 import * as serviceWorker from './serviceWorker';
@@ -19,7 +21,12 @@ const rootReducer = combineReducers({
   memoryStatz: memoryStatzReducer,
 });
 
-const store = createStore(rootReducer);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
 
 ReactDOM.render(
   <Provider store={store}>
