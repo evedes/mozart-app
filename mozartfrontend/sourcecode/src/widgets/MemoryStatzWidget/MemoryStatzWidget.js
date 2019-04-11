@@ -6,7 +6,7 @@ import { array } from 'prop-types';
 import MozartBox from '../../components/MozartBox';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
-import { withLoader, withPolling } from '../../hocs';
+import { withLoader, withDataConnection } from '../../hocs';
 import { loadMemoryStatz as fetchData } from './actions/loadMemoryStatz.actions';
 
 import { blueColorScheme as colors } from '../../constants/colorSchemes';
@@ -32,6 +32,7 @@ MemoryStatzWidget.propTypes = {
 const mapStateToProps = ({ global = {}, memoryStatz = {} }) => ({
   pollingPeriod: global.pollingPeriod,
   chartingPeriod: global.chartingPeriod,
+  connectionMode: global.connectionMode,
   changingChartingPeriod: memoryStatz.changingChartingPeriod,
   data: memoryStatz.data,
   isFetching: memoryStatz.isFetching,
@@ -44,5 +45,5 @@ export default compose(
     { fetchData }
   ),
   withLoader,
-  withPolling
+  withDataConnection
 )(MemoryStatzWidget);

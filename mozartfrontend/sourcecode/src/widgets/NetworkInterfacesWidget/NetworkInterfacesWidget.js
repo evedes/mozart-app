@@ -5,7 +5,7 @@ import { array } from 'prop-types';
 import MozartBox from '../../components/MozartBox';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
-import { withLoader, withPolling } from '../../hocs';
+import { withLoader, withDataConnection } from '../../hocs';
 import { loadNetworkStatz as fetchData } from './actions/loadNetworkStatz.actions';
 
 import './NetworkInterfacesWidget.scss';
@@ -28,6 +28,7 @@ NetworkInterfacesWidget.propTypes = {
 const mapStateToProps = ({ global = {}, networkStatz = {} }) => ({
   chartingPeriod: global.chartingPeriod,
   pollingPeriod: global.pollingPeriod,
+  connectionMode: global.connectionMode,
   changingChartingPeriod: networkStatz.changingChartingPeriod,
   data: networkStatz.data,
   isFetching: networkStatz.isFetching,
@@ -40,5 +41,5 @@ export default compose(
     { fetchData }
   ),
   withLoader,
-  withPolling
+  withDataConnection
 )(NetworkInterfacesWidget);

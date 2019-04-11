@@ -2,6 +2,7 @@ import {
   CHANGE_CHARTING_PERIOD,
   CHANGE_POLLING_PERIOD,
   CHANGE_CURRENT_BREAKPOINT,
+  CHANGE_CONNECTION_MODE,
   TOGGLE_DASHBOARD_LOCK,
 } from '../constants';
 
@@ -9,6 +10,7 @@ const initialState = {
   chartingPeriod: '10',
   pollingPeriod: '5',
   changingChartingPeriod: false,
+  connectionMode: 'polling',
   currentBreakpoint: null,
   isDashboardLocked: true,
 };
@@ -30,6 +32,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         currentBreakpoint: action.currentBreakpoint,
+      };
+    case CHANGE_CONNECTION_MODE:
+      return {
+        ...state,
+        connectionMode: action.connectionMode,
       };
     case TOGGLE_DASHBOARD_LOCK:
       return {

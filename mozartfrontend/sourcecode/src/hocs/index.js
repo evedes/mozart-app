@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import React from 'react';
 import { string, func } from 'prop-types';
 
@@ -15,35 +16,67 @@ export const withLoader = WrappedComponent =>
     }
   };
 
-export const withPolling = WrappedComponent =>
+export const withDataConnection = WrappedComponent =>
   class extends React.Component {
     static displayName = 'PollingHOC';
 
     static propTypes = {
       chartingPeriod: string,
       pollingPeriod: string,
+      connectionMode: string,
       fetchData: func,
     };
 
     componentDidMount() {
-      const { chartingPeriod, fetchData } = this.props;
+      const { chartingPeriod, fetchData, connectionMode } = this.props;
       fetchData(chartingPeriod, false);
-      this.setInterval(chartingPeriod);
+      switch (connectionMode) {
+        case 'polling':
+          return this.setInterval(chartingPeriod);
+        default:
+          return null;
+      }
     }
 
     componentDidUpdate(prevProps) {
-      const { chartingPeriod, pollingPeriod } = this.props;
+      const {
+        chartingPeriod,
+        pollingPeriod,
+        connectionMode,
+        fetchData,
+      } = this.props;
 
-      if (chartingPeriod !== prevProps.chartingPeriod) {
-        this.resetInterval(true);
-      }
-      if (pollingPeriod !== prevProps.pollingPeriod) {
-        this.resetInterval(true);
+      switch (connectionMode) {
+        case 'polling':
+          if (chartingPeriod !== prevProps.chartingPeriod) {
+            this.resetInterval(true);
+          }
+          if (pollingPeriod !== prevProps.pollingPeriod) {
+            this.resetInterval(true);
+          }
+          if (connectionMode !== prevProps.connectionMode) {
+            this.resetInterval(true);
+          }
+          break;
+        case 'streaming':
+          this.clearInterval();
+          if (chartingPeriod !== prevProps.chartingPeriod) {
+            fetchData(chartingPeriod, false);
+          }
+          break;
+        default:
+          return null;
       }
     }
 
     componentWillUnmount() {
-      this.clearInterval();
+      const { connectionMode } = this.props;
+      switch (connectionMode) {
+        case 'polling':
+          return this.clearInterval();
+        default:
+          return null;
+      }
     }
 
     setInterval = () => {
@@ -66,6 +99,7 @@ export const withPolling = WrappedComponent =>
     };
 
     render() {
+      console.log('connectionMode: ', this.props.connectionMode);
       return <WrappedComponent {...this.props} />;
     }
   };
