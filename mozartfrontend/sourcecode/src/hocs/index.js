@@ -99,7 +99,6 @@ export const withDataConnection = WrappedComponent =>
     };
 
     render() {
-      console.log('connectionMode: ', this.props.connectionMode);
       return <WrappedComponent {...this.props} />;
     }
   };
