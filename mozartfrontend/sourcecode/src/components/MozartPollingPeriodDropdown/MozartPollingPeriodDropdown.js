@@ -33,8 +33,7 @@ class MozartPollingPeriodDropdown extends React.Component {
   };
 
   renderPollingPeriodText = () => {
-    const { pollingPeriod, currentBreakpoint } = this.props;
-    if (currentBreakpoint === 'sm') return null;
+    const { pollingPeriod } = this.props;
 
     switch (pollingPeriod) {
       case '2':
@@ -81,7 +80,6 @@ class MozartPollingPeriodDropdown extends React.Component {
 
 MozartPollingPeriodDropdown.propTypes = {
   pollingPeriod: string,
-  currentBreakpoint: string,
   changePollingPeriod: func,
 };
 
