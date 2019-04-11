@@ -7,6 +7,7 @@ import { toggleDashboardLock } from '../../actions/toggleDashboardLock.actions';
 import MozartImage from '../MozartImage';
 import MozartChartPeriodDropdown from '../MozartChartPeriodDropdown';
 import MozartPollingPeriodDropdown from '../MozartPollingPeriodDropdown';
+import MozartPollingStreamingDropdown from '../MozartPollingStreamingDropdown';
 
 import './MozartHeader.scss';
 
@@ -38,13 +39,18 @@ class MozartHeader extends React.Component {
         <div className="ml-auto">
           <Button
             color="dark"
-            className="lock-button"
+            className="lock-button mr-3"
             onClick={this.toggleDashboardLock}
           >
             <FontAwesomeIcon icon={this.getLockIcon()} />
           </Button>
         </div>
-        <div className="mx-3">
+        <div className="mr-3">
+          <MozartPollingStreamingDropdown
+            currentBreakpoint={currentBreakpoint}
+          />
+        </div>
+        <div className="mr-3">
           <MozartPollingPeriodDropdown currentBreakpoint={currentBreakpoint} />
         </div>
         <div className="mr-3">
