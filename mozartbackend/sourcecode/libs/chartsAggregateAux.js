@@ -35,12 +35,13 @@ const sortGroup = chartingPeriod => {
     case '60':
     case '720':
       return {
+        '_id.day': 1,
         '_id.hour': 1,
         '_id.minute': 1,
         '_id.second': 1,
       };
     default:
-      return { '_id.hour': 1, '_id.minute': 1 };
+      return { '_id.day': 1, '_id.hour': 1, '_id.minute': 1 };
   }
 };
 
