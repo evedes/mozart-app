@@ -32,6 +32,8 @@ class MozartGridLayout extends React.Component {
   };
 
   onBreakpointChange = breakpoint => {
+    // eslint-disable-next-line no-shadow
+    const { changeCurrentBreakpoint } = this.props;
     changeCurrentBreakpoint(breakpoint);
   };
 
@@ -73,6 +75,7 @@ MozartGridLayout.propTypes = {
   layouts: object,
   defaultBreakpoints: object,
   currentBreakpoint: string,
+  changeCurrentBreakpoint: func,
   onBreakpointChange: func,
   defaultCols: object,
   rowHeight: number,
