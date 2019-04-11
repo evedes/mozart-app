@@ -24,6 +24,7 @@
     "reactstrap": "^7.1.0",
     "recharts": "^1.5.0",
     "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "tinycolor2": "^1.4.1",
     "typescript": "^3.3.3333",
     "ua-parser-js": "^0.7.19"
