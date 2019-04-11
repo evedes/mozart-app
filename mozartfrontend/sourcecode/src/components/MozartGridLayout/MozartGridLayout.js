@@ -32,8 +32,7 @@ class MozartGridLayout extends React.Component {
   };
 
   onBreakpointChange = breakpoint => {
-    const { dispatch } = this.props;
-    dispatch(changeCurrentBreakpoint(breakpoint));
+    changeCurrentBreakpoint(breakpoint);
   };
 
   render() {
@@ -87,4 +86,7 @@ const mapStateToProps = ({ global = {} }) => ({
   currentBreakpoint: global.currentBreakpoint,
 });
 
-export default connect(mapStateToProps)(withSize()(MozartGridLayout));
+export default connect(
+  mapStateToProps,
+  { changeCurrentBreakpoint }
+)(withSize()(MozartGridLayout));

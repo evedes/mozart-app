@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { string, func, bool } from 'prop-types';
+import { string, bool, func } from 'prop-types';
 import { Button } from 'reactstrap';
 import { toggleDashboardLock } from '../../actions/toggleDashboardLock.actions';
 import MozartImage from '../MozartImage';
@@ -22,8 +22,9 @@ class MozartHeader extends React.Component {
   };
 
   toggleDashboardLock = () => {
-    const { dispatch } = this.props;
-    dispatch(toggleDashboardLock());
+    // eslint-disable-next-line no-shadow
+    const { toggleDashboardLock } = this.props;
+    toggleDashboardLock();
   };
 
   render() {
@@ -57,7 +58,7 @@ class MozartHeader extends React.Component {
 MozartHeader.propTypes = {
   currentBreakpoint: string,
   isDashboardLocked: bool,
-  dispatch: func,
+  toggleDashboardLock: func,
 };
 
 const mapStateToProps = ({ global = {} }) => ({
@@ -65,4 +66,7 @@ const mapStateToProps = ({ global = {} }) => ({
   isDashboardLocked: global.isDashboardLocked,
 });
 
-export default connect(mapStateToProps)(MozartHeader);
+export default connect(
+  mapStateToProps,
+  { toggleDashboardLock }
+)(MozartHeader);

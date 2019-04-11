@@ -26,9 +26,10 @@ class MozartChartPeriodDropdown extends React.Component {
     }));
 
   setChartingPeriod = e => {
-    const { dispatch } = this.props;
+    // eslint-disable-next-line no-shadow
+    const { changeChartingTime } = this.props;
     const { value: chartingPeriod } = e.target;
-    return dispatch(changeChartingTime(chartingPeriod));
+    return changeChartingTime(chartingPeriod);
   };
 
   renderChartingPeriodText = () => {
@@ -81,11 +82,14 @@ class MozartChartPeriodDropdown extends React.Component {
 MozartChartPeriodDropdown.propTypes = {
   chartingPeriod: string,
   currentBreakpoint: string,
-  dispatch: func,
+  changeChartingTime: func,
 };
 
 const mapStateToProps = ({ global = {} }) => ({
   chartingPeriod: global.chartingPeriod,
 });
 
-export default connect(mapStateToProps)(MozartChartPeriodDropdown);
+export default connect(
+  mapStateToProps,
+  { changeChartingTime }
+)(MozartChartPeriodDropdown);

@@ -26,9 +26,10 @@ class MozartPollingPeriodDropdown extends React.Component {
     }));
 
   setPollingPeriod = e => {
-    const { dispatch } = this.props;
+    // eslint-disable-next-line no-shadow
+    const { changePollingPeriod } = this.props;
     const { value: pollingPeriod } = e.target;
-    return dispatch(changePollingPeriod(pollingPeriod));
+    return changePollingPeriod(pollingPeriod);
   };
 
   renderPollingPeriodText = () => {
@@ -81,11 +82,14 @@ class MozartPollingPeriodDropdown extends React.Component {
 MozartPollingPeriodDropdown.propTypes = {
   pollingPeriod: string,
   currentBreakpoint: string,
-  dispatch: func,
+  changePollingPeriod: func,
 };
 
 const mapStateToProps = ({ global = {} }) => ({
   pollingPeriod: global.pollingPeriod,
 });
 
-export default connect(mapStateToProps)(MozartPollingPeriodDropdown);
+export default connect(
+  mapStateToProps,
+  { changePollingPeriod }
+)(MozartPollingPeriodDropdown);
