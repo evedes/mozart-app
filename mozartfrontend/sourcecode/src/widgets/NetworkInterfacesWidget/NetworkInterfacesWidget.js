@@ -5,7 +5,7 @@ import { array } from 'prop-types';
 import MozartBox from '../../components/MozartBox';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
-import { withLoader, withDataConnection } from '../../hocs';
+import { withLoader, withWSStreams } from '../../hocs';
 import { loadNetworkStatz as fetchData } from './actions/loadNetworkStatz.actions';
 
 import './NetworkInterfacesWidget.scss';
@@ -41,5 +41,5 @@ export default compose(
     { fetchData }
   ),
   withLoader,
-  withDataConnection
+  withWSStreams
 )(NetworkInterfacesWidget);

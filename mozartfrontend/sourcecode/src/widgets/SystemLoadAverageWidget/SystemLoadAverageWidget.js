@@ -7,7 +7,7 @@ import { array } from 'prop-types';
 import MozartBox from '../../components/MozartBox';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
-import { withLoader, withDataConnection } from '../../hocs';
+import { withLoader, withPolling } from '../../hocs';
 import { loadCPUSystemAverage as fetchData } from './actions/loadCPUSystemAverage.actions';
 
 import './SystemLoadAverageWidget.scss';
@@ -42,5 +42,5 @@ export default compose(
     { fetchData }
   ),
   withLoader,
-  withDataConnection
+  withPolling
 )(SystemLoadAverageWidget);
