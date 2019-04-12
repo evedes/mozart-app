@@ -1,6 +1,6 @@
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
-import { string, func } from 'prop-types';
+import { string, func, bool } from 'prop-types';
 
 import MozartSpinner from '../components/MozartSpinner';
 
@@ -16,7 +16,34 @@ export const withLoader = WrappedComponent =>
     }
   };
 
-export const withDataConnection = WrappedComponent =>
+export const withWSStreams = WrappedComponent =>
+  class extends React.Component {
+    static displayName = 'WSStreamsHOC';
+
+    static propTypes = {
+      chartingPeriod: string,
+      fetchData: func,
+      changingChartingPeriod: bool,
+    };
+
+    componentDidMount() {
+      const { chartingPeriod, fetchData } = this.props;
+      fetchData(chartingPeriod, false);
+    }
+
+    componentDidUpdate(prevProps) {
+      const { chartingPeriod, fetchData } = this.props;
+      if (chartingPeriod !== prevProps.chartingPeriod) {
+        fetchData(chartingPeriod, true);
+      }
+    }
+
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  };
+
+export const withPolling = WrappedComponent =>
   class extends React.Component {
     static displayName = 'PollingHOC';
 
@@ -28,55 +55,24 @@ export const withDataConnection = WrappedComponent =>
     };
 
     componentDidMount() {
-      const { chartingPeriod, fetchData, connectionMode } = this.props;
+      const { chartingPeriod, fetchData } = this.props;
       fetchData(chartingPeriod, false);
-      switch (connectionMode) {
-        case 'polling':
-          return this.setInterval(chartingPeriod);
-        default:
-          return null;
-      }
+      return this.setInterval(chartingPeriod);
     }
 
     componentDidUpdate(prevProps) {
-      const {
-        chartingPeriod,
-        pollingPeriod,
-        connectionMode,
-        fetchData,
-      } = this.props;
+      const { chartingPeriod, pollingPeriod } = this.props;
 
-      switch (connectionMode) {
-        case 'polling':
-          if (chartingPeriod !== prevProps.chartingPeriod) {
-            this.resetInterval(true);
-          }
-          if (pollingPeriod !== prevProps.pollingPeriod) {
-            this.resetInterval(true);
-          }
-          if (connectionMode !== prevProps.connectionMode) {
-            this.resetInterval(true);
-          }
-          break;
-        case 'streaming':
-          this.clearInterval();
-          if (chartingPeriod !== prevProps.chartingPeriod) {
-            fetchData(chartingPeriod, false);
-          }
-          break;
-        default:
-          return null;
+      if (chartingPeriod !== prevProps.chartingPeriod) {
+        this.resetInterval(true);
+      }
+      if (pollingPeriod !== prevProps.pollingPeriod) {
+        this.resetInterval(true);
       }
     }
 
     componentWillUnmount() {
-      const { connectionMode } = this.props;
-      switch (connectionMode) {
-        case 'polling':
-          return this.clearInterval();
-        default:
-          return null;
-      }
+      return this.clearInterval();
     }
 
     setInterval = () => {
