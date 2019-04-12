@@ -38,7 +38,7 @@ class MozartPollingStreamingDropdown extends React.Component {
       case 'polling':
         return currentBreakpoint === 'sm' ? 'P' : 'Polling';
       case 'streaming':
-        return currentBreakpoint === 'sm' ? 'WS' : 'Streaming WS';
+        return currentBreakpoint === 'sm' ? 'WS' : 'Streaming';
       default:
         return null;
     }
@@ -55,10 +55,10 @@ class MozartPollingStreamingDropdown extends React.Component {
           </DropdownToggle>
           <DropdownMenu right>
             <DropdownItem value="polling" onClick={this.setFetchingMode}>
-              Polling
+              Polling (Fetching)
             </DropdownItem>
             <DropdownItem value="streaming" onClick={this.setFetchingMode}>
-              Streaming
+              Streaming (WebSockets)
             </DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
