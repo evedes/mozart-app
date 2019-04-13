@@ -6,8 +6,8 @@ import MozartBox from '../../components/MozartBox';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
 import { withLoader, withWSStreams } from '../../hocs';
-import { loadNetworkStatz as fetchData } from './actions/loadNetworkStatz.actions';
-
+// import { pollNetworkStatz as fetchData } from './actions/loadNetworkStatz.actions';
+import { streamNetworkStatz as fetchData } from './actions/loadNetworkStatz.actions';
 import './NetworkInterfacesWidget.scss';
 
 const NetworkInterfacesWidget = ({ data }) => (
