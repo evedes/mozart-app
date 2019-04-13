@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const socket = require('socket.io');
+const moment = require('moment');
+const app = require('./app');
+
 require('dotenv').config({ path: '.env' });
 
 const { PORT, DATABASE } = process.env;
@@ -31,12 +35,29 @@ mongoose.connection.on('connected', () => {
 
 // APP INITIALIZATION - STARTING SERVER... 🚀
 
-const app = require('./app');
-
 app.set('port', PORT);
 
-app.listen(app.get('port'), () => {
+const server = app.listen(app.get('port'), () => {
   console.log('--------------------------------------------------');
   console.log(`🚀  Mozart_Backend API: listening on PORT ${PORT}!`);
   console.log('--------------------------------------------------\n');
+});
+
+// SOCKET CONNECTIONS
+const io = socket(server);
+// io.origins(['*:*']);
+
+const networkStatz = () => [
+  { txSec: 3, rxSec: -5, date: moment() },
+  { txSec: 3, rxSec: -5, date: moment().add('minute', 2) },
+  { txSec: 2, rxSec: -1, date: moment().add('minute', 5) },
+];
+
+io.on('connection', networkStatzSocket => {
+  networkStatzSocket.on('subscribeToNetworkStatz', interval => {
+    setInterval(() => {
+      console.log('fock yeah: 🚀');
+      networkStatzSocket.emit('networkStatz', networkStatz());
+    }, interval);
+  });
 });
