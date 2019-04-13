@@ -7,10 +7,33 @@ import {
   LOAD_NETWORK_STATZ_ERROR,
 } from '../constants';
 
-export const loadNetworkStatz = (
+import { subscribeToNetworkStatz } from '../../../libs/socketLib';
+
+export const streamNetworkStatz = () => async dispatch => {
+  console.log('streaming network statz');
+  dispatch({
+    type: LOAD_NETWORK_STATZ_REQUEST,
+  });
+  try {
+    subscribeToNetworkStatz(networkStatz => {
+      dispatch({
+        type: LOAD_NETWORK_STATZ_SUCCESS,
+        networkStatz,
+      });
+    }, 1 * 1000);
+  } catch (error) {
+    dispatch({
+      type: LOAD_NETWORK_STATZ_ERROR,
+      error,
+    });
+  }
+};
+
+export const pollNetworkStatz = (
   chartingPeriod,
   changingChartingPeriod
 ) => async dispatch => {
+  console.log('fetching Network Statz');
   dispatch({
     type: LOAD_NETWORK_STATZ_REQUEST,
     changingChartingPeriod,
