@@ -23,19 +23,13 @@ export const withWSStreams = WrappedComponent =>
     static propTypes = {
       chartingPeriod: string,
       fetchData: func,
+      fetchStream: func,
       changingChartingPeriod: bool,
     };
 
     componentDidMount() {
-      const { chartingPeriod, fetchData } = this.props;
-      fetchData(chartingPeriod, false);
-    }
-
-    componentDidUpdate(prevProps) {
-      const { chartingPeriod, fetchData } = this.props;
-      if (chartingPeriod !== prevProps.chartingPeriod) {
-        fetchData(chartingPeriod, true);
-      }
+      const { fetchData } = this.props;
+      fetchData();
     }
 
     render() {
