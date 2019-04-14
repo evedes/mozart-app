@@ -1,0 +1,3 @@
+import NetworkInterfacesWidgetWSStreaming from './NetworkInterfacesWidgetWSStreaming';
+
+export default NetworkInterfacesWidgetWSStreaming;
