@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const socket = require('socket.io');
-const moment = require('moment');
 const app = require('./app');
+const getNetworkStatz = require('./libs/getNetworkStatz');
 
 require('dotenv').config({ path: '.env' });
 
@@ -28,9 +28,7 @@ mongoose.connection.on('error', err => {
 
 mongoose.connection.on('connected', () => {
   mongodbErrorCounter = 0;
-  console.log('--------------------------------------------------');
   console.log(`🚀  MongoDB is Connected...`);
-  console.log('--------------------------------------------------\n');
 });
 
 // APP INITIALIZATION - STARTING SERVER... 🚀
@@ -38,26 +36,28 @@ mongoose.connection.on('connected', () => {
 app.set('port', PORT);
 
 const server = app.listen(app.get('port'), () => {
-  console.log('--------------------------------------------------');
+  console.log('------------------------------------------------------------');
   console.log(`🚀  Mozart_Backend API: listening on PORT ${PORT}!`);
-  console.log('--------------------------------------------------\n');
 });
 
 // SOCKET CONNECTIONS
 const io = socket(server);
 // io.origins(['*:*']);
 
-const networkStatz = () => [
-  { txSec: 3, rxSec: -5, date: moment() },
-  { txSec: 3, rxSec: -5, date: moment().add('minute', 2) },
-  { txSec: 2, rxSec: -1, date: moment().add('minute', 5) },
-];
-
-io.on('connection', networkStatzSocket => {
-  networkStatzSocket.on('subscribeToNetworkStatz', interval => {
+io.on('connection', client => {
+  console.log(`🚀  Mozart_Backend API: Client Connected To WebSockets 💥`);
+  console.log('------------------------------------------------------------\n');
+  client.on('subscribeToNetworkStatz', (chartingPeriod, pollingPeriod) => {
+    // load initial data
+    getNetworkStatz(networkStatz => {
+      client.emit('networkStatz', networkStatz);
+    }, chartingPeriod);
+    // stream with interval
     setInterval(() => {
-      console.log('fock yeah: 🚀');
-      networkStatzSocket.emit('networkStatz', networkStatz());
-    }, interval);
+      getNetworkStatz(networkStatz => {
+        console.log('pollingPeriod', pollingPeriod);
+        client.emit('networkStatz', networkStatz);
+      }, chartingPeriod);
+    }, pollingPeriod);
   });
 });
