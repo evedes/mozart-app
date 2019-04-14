@@ -71,7 +71,6 @@ class StatzGrid extends React.Component {
 
   render() {
     const { currentBreakpoint, connectionMode } = this.props;
-    console.log(connectionMode);
     const { layouts } = this.state;
     return (
       <div className="StatzGrid">
