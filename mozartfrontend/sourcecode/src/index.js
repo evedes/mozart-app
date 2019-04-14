@@ -10,13 +10,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './libs/fontAwesomeLib';
 
 import mozartReducer from './reducers';
-import networkStatzReducer from './widgets/NetworkInterfacesWidget/reducers';
+import networkStatzPollingReducer from './widgets/NetworkInterfacesWidgetPolling/reducers';
+import networkStatzWSStreamingReducer from './widgets/NetworkInterfacesWidgetWSStreaming/reducers';
 import cpuSystemLoadAvgReducer from './widgets/SystemLoadAverageWidget/reducers';
 import memoryStatzReducer from './widgets/MemoryStatzWidget/reducers';
 
 const rootReducer = combineReducers({
   global: mozartReducer,
-  networkStatz: networkStatzReducer,
+  networkStatzPolling: networkStatzPollingReducer,
+  networkStatzWSStreaming: networkStatzWSStreamingReducer,
   cpuSystemLoadAvg: cpuSystemLoadAvgReducer,
   memoryStatz: memoryStatzReducer,
 });
