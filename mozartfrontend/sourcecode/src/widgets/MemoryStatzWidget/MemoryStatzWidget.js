@@ -32,7 +32,6 @@ MemoryStatzWidget.propTypes = {
 const mapStateToProps = ({ global = {}, memoryStatz = {} }) => ({
   pollingPeriod: global.pollingPeriod,
   chartingPeriod: global.chartingPeriod,
-  connectionMode: global.connectionMode,
   changingChartingPeriod: memoryStatz.changingChartingPeriod,
   data: memoryStatz.data,
   isFetching: memoryStatz.isFetching,

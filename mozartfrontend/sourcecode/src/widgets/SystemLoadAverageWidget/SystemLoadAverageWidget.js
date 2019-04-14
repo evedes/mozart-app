@@ -29,7 +29,6 @@ SystemLoadAverageWidget.propTypes = {
 const mapStateToProps = ({ global = {}, cpuSystemLoadAvg = {} }) => ({
   chartingPeriod: global.chartingPeriod,
   pollingPeriod: global.pollingPeriod,
-  connectionMode: global.connectionMode,
   changingChartingPeriod: cpuSystemLoadAvg.changingChartingPeriod,
   data: cpuSystemLoadAvg.data,
   isFetching: cpuSystemLoadAvg.isFetching,
