@@ -1,23 +1,24 @@
 const express = require('express');
+const _ = require('lodash');
 
 const router = express.Router();
 const moment = require('moment');
 const os = require('os');
 const si = require('systeminformation');
-
-const _ = require('lodash');
+const getNetworkStatz = require('../libs/getNetworkStatz');
 
 require('../timers');
 
 // MODELS
 const cpuLoadAvgModel = require('../models/cpuLoadAvg');
-const networkStatzModel = require('../models/networkStatz');
 const memoryStatzModel = require('../models/memoryStatz');
 
 // AGGREGATES AUX FUNCTIONS
 const { matchGroup } = require('../libs/chartsAggregateAux');
 const { sortGroup } = require('../libs/chartsAggregateAux');
 const { aggregateById } = require('../libs/chartsAggregateAux');
+
+// SOCKET CONNECTIONS
 
 // ROUTER ENDPOINTS
 router.get('/cpuLoadAvg/:chartingPeriod', async (req, res) => {
@@ -100,75 +101,9 @@ router.get('/cpuLoadAvg/:chartingPeriod', async (req, res) => {
 
 router.get('/networkStatz/:chartingPeriod', async (req, res) => {
   const { chartingPeriod } = req.params;
-  const endDate = moment();
-  const startDate = moment()
-    .subtract(chartingPeriod, 'minutes')
-    .startOf('minute');
-
-  await networkStatzModel
-    .aggregate([
-      {
-        $match: matchGroup(startDate, endDate),
-      },
-      {
-        $group: {
-          _id: aggregateById(chartingPeriod),
-          rx_sec: { $avg: '$rx_sec' },
-          tx_sec: { $avg: '$tx_sec' },
-        },
-      },
-      {
-        $sort: sortGroup(chartingPeriod),
-      },
-      {
-        $project: {
-          rx_sec: 1,
-          tx_sec: 1,
-          date: 1,
-        },
-      },
-    ])
-    .exec((err, docs) => {
-      const networkStatz = _(docs)
-        .map(doc => {
-          const { _id: id, rx_sec: rxSec, tx_sec: txSec } = doc;
-          switch (chartingPeriod) {
-            case '10':
-              return {
-                rx_sec: _.round(-rxSec / 1024, 3),
-                tx_sec: _.round(txSec / 1024, 3),
-                date: moment(id).toDate(),
-              };
-            case '60':
-              if (id.second % 5 === 0) {
-                return {
-                  rx_sec: _.round(-rxSec / 1024, 3),
-                  tx_sec: _.round(txSec / 1024, 3),
-                  date: moment(id).toDate(),
-                };
-              }
-              return null;
-            case '720':
-              if (id.second % 15 === 0) {
-                return {
-                  rx_sec: _.round(-rxSec / 1024, 3),
-                  tx_sec: _.round(txSec / 1024, 3),
-                  date: moment(id).toDate(),
-                };
-              }
-              return null;
-            default:
-              return {
-                rx_sec: _.round(-rxSec / 1024, 3),
-                tx_sec: _.round(txSec / 1024, 3),
-                date: moment(id).toDate(),
-              };
-          }
-        })
-        .compact()
-        .value();
-      res.json(networkStatz);
-    });
+  return getNetworkStatz(networkStatz => {
+    res.json(networkStatz);
+  }, chartingPeriod);
 });
 
 router.get('/memoryStatz/:chartingPeriod', async (req, res) => {
