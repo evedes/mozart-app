@@ -8,7 +8,6 @@ export const withLoader = WrappedComponent =>
   class extends WrappedComponent {
     render() {
       const { data, isFetching, isLoaded, changingChartingPeriod } = this.props;
-
       if (!data || (isFetching && !isLoaded && changingChartingPeriod)) {
         return <MozartSpinner />;
       }
@@ -22,14 +21,24 @@ export const withWSStreams = WrappedComponent =>
 
     static propTypes = {
       chartingPeriod: string,
+      pollingPeriod: string,
       fetchData: func,
-      fetchStream: func,
       changingChartingPeriod: bool,
     };
 
     componentDidMount() {
-      const { fetchData } = this.props;
-      fetchData();
+      const { chartingPeriod, fetchData, pollingPeriod } = this.props;
+      fetchData(chartingPeriod, pollingPeriod, false);
+    }
+
+    componentDidUpdate(prevProps) {
+      const { chartingPeriod, fetchData, pollingPeriod } = this.props;
+      if (chartingPeriod !== prevProps.chartingPeriod) {
+        fetchData(chartingPeriod, pollingPeriod, true);
+      }
+      if (pollingPeriod !== prevProps.pollingPeriod) {
+        fetchData(chartingPeriod, pollingPeriod, false);
+      }
     }
 
     render() {
