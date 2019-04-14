@@ -12,15 +12,19 @@ import './libs/fontAwesomeLib';
 import mozartReducer from './reducers';
 import networkStatzPollingReducer from './widgets/NetworkInterfacesWidgetPolling/reducers';
 import networkStatzWSStreamingReducer from './widgets/NetworkInterfacesWidgetWSStreaming/reducers';
-import cpuSystemLoadAvgReducer from './widgets/SystemLoadAverageWidget/reducers';
-import memoryStatzReducer from './widgets/MemoryStatzWidget/reducers';
+import cpuSystemLoadAvgPollingReducer from './widgets/SystemLoadAverageWidgetPolling/reducers';
+import cpuSystemLoadAvgWSStreamingReducer from './widgets/SystemLoadAverageWidgetWSStreaming/reducers';
+import memoryStatzPollingReducer from './widgets/MemoryStatzWidgetPolling/reducers';
+import memoryStatzWSStreamingReducer from './widgets/MemoryStatzWidgetWSStreaming/reducers';
 
 const rootReducer = combineReducers({
   global: mozartReducer,
   networkStatzPolling: networkStatzPollingReducer,
   networkStatzWSStreaming: networkStatzWSStreamingReducer,
-  cpuSystemLoadAvg: cpuSystemLoadAvgReducer,
-  memoryStatz: memoryStatzReducer,
+  cpuSystemLoadAvgPolling: cpuSystemLoadAvgPollingReducer,
+  cpuSystemLoadAvgWSStreaming: cpuSystemLoadAvgWSStreamingReducer,
+  memoryStatzPolling: memoryStatzPollingReducer,
+  memoryStatzWSStreaming: memoryStatzWSStreamingReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

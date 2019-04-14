@@ -6,13 +6,15 @@ import MozartGridLayout from '../../components/MozartGridLayout';
 import StatzHeader from '../../widgets/StatzHeader';
 import NetworkInterfacesWidgetPolling from '../../widgets/NetworkInterfacesWidgetPolling';
 import NetworkInterfacesWidgetWSStreaming from '../../widgets/NetworkInterfacesWidgetWSStreaming';
-import SystemLoadAverageWidget from '../../widgets/SystemLoadAverageWidget';
-import MemoryStatzWidget from '../../widgets/MemoryStatzWidget';
+import SystemLoadAverageWidgetPolling from '../../widgets/SystemLoadAverageWidgetPolling';
+import SystemLoadAverageWidgetWSStreaming from '../../widgets/SystemLoadAverageWidgetWSStreaming';
+import MemoryStatzWidgetPolling from '../../widgets/MemoryStatzWidgetPolling';
 import ProcessesStatzWidget from '../../widgets/ProcessesStatzWidget';
 
 import './StatzGrid.scss';
 
 import { defaultLayouts, rowHeight } from './gridDefaultConfig';
+import MemoryStatzWidgetWSStreaming from '../../widgets/MemoryStatzWidgetWSStreaming';
 
 const gridComponents = connectionMode => [
   { gridComponent: StatzHeader, key: 'StatzHeader' },
@@ -23,8 +25,20 @@ const gridComponents = connectionMode => [
         : NetworkInterfacesWidgetWSStreaming,
     key: 'NetworkInterfacesWidget',
   },
-  { gridComponent: SystemLoadAverageWidget, key: 'SystemLoadAverageWidget' },
-  { gridComponent: MemoryStatzWidget, key: 'MemoryStatzWidget' },
+  {
+    gridComponent:
+      connectionMode === 'polling'
+        ? SystemLoadAverageWidgetPolling
+        : SystemLoadAverageWidgetWSStreaming,
+    key: 'SystemLoadAverageWidget',
+  },
+  {
+    gridComponent:
+      connectionMode === 'polling'
+        ? MemoryStatzWidgetPolling
+        : MemoryStatzWidgetWSStreaming,
+    key: 'MemoryStatzWidget',
+  },
   { gridComponent: ProcessesStatzWidget, key: 'ProcessesStatzWidget' },
 ];
 

@@ -12,10 +12,6 @@ import { changeChartingTime } from '../../actions/chartingTime.actions';
 import './MozartChartPeriodDropdown.scss';
 
 class MozartChartPeriodDropdown extends React.Component {
-  static defaultProps = {
-    chartingPeriod: '10',
-  };
-
   state = {
     isDropdownOpen: false,
   };

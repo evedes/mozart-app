@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
+const _ = require('lodash');
 const socket = require('socket.io');
 const app = require('./app');
 const getNetworkStatz = require('./libs/getNetworkStatz');
+const getMemoryStatz = require('./libs/getMemoryStatz');
+const getCpuStatz = require('./libs/getCpuStatz');
 
 require('dotenv').config({ path: '.env' });
 
@@ -40,7 +43,8 @@ const server = app.listen(app.get('port'), () => {
   console.log(`🚀  Mozart_Backend API: listening on PORT ${PORT}!`);
 });
 
-// SOCKET CONNECTIONS
+// INITIALIZE SOCKET CONNECTIONS
+
 const io = socket(server);
 // io.origins(['*:*']);
 
@@ -55,8 +59,42 @@ io.on('connection', client => {
     // stream with interval
     setInterval(() => {
       getNetworkStatz(networkStatz => {
-        console.log('pollingPeriod', pollingPeriod);
+        console.log(
+          '⏲️ WS Streams Period (NetworkStatz): ',
+          pollingPeriod,
+          '\n'
+        );
         client.emit('networkStatz', networkStatz);
+      }, chartingPeriod);
+    }, pollingPeriod);
+  });
+  client.on('subscribeToMemoryStatz', (chartingPeriod, pollingPeriod) => {
+    // load initial data
+    getMemoryStatz(memoryStatz => {
+      client.emit('memoryStatz', memoryStatz);
+    }, chartingPeriod);
+    // stream with interval
+    setInterval(() => {
+      getMemoryStatz(memoryStatz => {
+        console.log(
+          '⏲️ WS Streams Period (MemoryStatz): ',
+          pollingPeriod,
+          '\n'
+        );
+        client.emit('memoryStatz', memoryStatz);
+      }, chartingPeriod);
+    }, pollingPeriod);
+  });
+  client.on('subscribeToCpuStatz', (chartingPeriod, pollingPeriod) => {
+    // load initial data
+    getCpuStatz(cpuStatz => {
+      client.emit('cpuStatz', cpuStatz);
+    }, chartingPeriod);
+    // stream with interval
+    setInterval(() => {
+      getCpuStatz(cpuStatz => {
+        console.log('⏲️ WS Streams Period (CpuStatz): ', pollingPeriod, '\n');
+        client.emit('cpuStatz', cpuStatz);
       }, chartingPeriod);
     }, pollingPeriod);
   });

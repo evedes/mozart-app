@@ -13,7 +13,7 @@ import './MozartPollingStreamingDropdown.scss';
 
 class MozartPollingStreamingDropdown extends React.Component {
   static defaultProps = {
-    connectionMode: 'polling',
+    connectionMode: 'streaming',
   };
 
   state = {

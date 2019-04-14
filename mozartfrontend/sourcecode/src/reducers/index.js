@@ -8,9 +8,9 @@ import {
 
 const initialState = {
   chartingPeriod: '10',
-  pollingPeriod: '5',
+  pollingPeriod: '10',
   changingChartingPeriod: false,
-  connectionMode: 'polling',
+  connectionMode: 'streaming',
   currentBreakpoint: null,
   isDashboardLocked: true,
 };

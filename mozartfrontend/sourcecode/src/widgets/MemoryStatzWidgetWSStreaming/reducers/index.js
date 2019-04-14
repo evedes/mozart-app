@@ -1,7 +1,7 @@
 import {
-  LOAD_MEMORY_STATZ_REQUEST,
-  LOAD_MEMORY_STATZ_SUCCESS,
-  LOAD_MEMORY_STATZ_ERROR,
+  LOAD_MEMORY_STATZ_WSSTREAMING_REQUEST,
+  LOAD_MEMORY_STATZ_WSSTREAMING_SUCCESS,
+  LOAD_MEMORY_STATZ_WSSTREAMING_ERROR,
 } from '../constants';
 
 const initialState = {
@@ -12,14 +12,14 @@ const initialState = {
 const memoryStatzReducer = (state = initialState, action) => {
   const { type } = action;
   switch (type) {
-    case LOAD_MEMORY_STATZ_REQUEST:
+    case LOAD_MEMORY_STATZ_WSSTREAMING_REQUEST:
       return {
         ...state,
         isFetching: true,
         isLoaded: false,
         changingChartingPeriod: action.changingChartingPeriod,
       };
-    case LOAD_MEMORY_STATZ_SUCCESS:
+    case LOAD_MEMORY_STATZ_WSSTREAMING_SUCCESS:
       return {
         ...state,
         isFetching: false,
@@ -27,7 +27,7 @@ const memoryStatzReducer = (state = initialState, action) => {
         changingChartingPeriod: false,
         data: action.memoryStatz,
       };
-    case LOAD_MEMORY_STATZ_ERROR:
+    case LOAD_MEMORY_STATZ_WSSTREAMING_ERROR:
       return {
         ...state,
         isFetching: false,

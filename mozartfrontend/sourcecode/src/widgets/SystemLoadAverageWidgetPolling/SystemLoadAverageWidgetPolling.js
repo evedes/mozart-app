@@ -8,31 +8,31 @@ import MozartBox from '../../components/MozartBox';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
 import { withLoader, withPolling } from '../../hocs';
-import { loadCPUSystemAverage as fetchData } from './actions/loadCPUSystemAverage.actions';
+import { pollCPUSystemAverage as fetchData } from './actions/loadCPUSystemAverage.actions';
 
-import './SystemLoadAverageWidget.scss';
+import './SystemLoadAverageWidgetPolling.scss';
 
-const SystemLoadAverageWidget = ({ data }) => (
+const SystemLoadAverageWidgetPolling = ({ data }) => (
   <MozartBox>
     <MozartAreaChart
-      title="System Load Average (1 min, 5 min, 15 min)"
+      title="System Load Average (1 min, 5 min, 15 min) - Fetch / Polling"
       data={data}
       xKey="date"
     />
   </MozartBox>
 );
 
-SystemLoadAverageWidget.propTypes = {
+SystemLoadAverageWidgetPolling.propTypes = {
   data: array,
 };
 
-const mapStateToProps = ({ global = {}, cpuSystemLoadAvg = {} }) => ({
+const mapStateToProps = ({ global = {}, cpuSystemLoadAvgPolling = {} }) => ({
   chartingPeriod: global.chartingPeriod,
   pollingPeriod: global.pollingPeriod,
-  changingChartingPeriod: cpuSystemLoadAvg.changingChartingPeriod,
-  data: cpuSystemLoadAvg.data,
-  isFetching: cpuSystemLoadAvg.isFetching,
-  isLoaded: cpuSystemLoadAvg.isLoaded,
+  changingChartingPeriod: cpuSystemLoadAvgPolling.changingChartingPeriod,
+  data: cpuSystemLoadAvgPolling.data,
+  isFetching: cpuSystemLoadAvgPolling.isFetching,
+  isLoaded: cpuSystemLoadAvgPolling.isLoaded,
 });
 
 export default compose(
@@ -42,4 +42,4 @@ export default compose(
   ),
   withLoader,
   withPolling
-)(SystemLoadAverageWidget);
+)(SystemLoadAverageWidgetPolling);

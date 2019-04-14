@@ -12,10 +12,6 @@ import { changePollingPeriod } from '../../actions/pollingPeriod.actions';
 import './MozartPollingPeriodDropdown.scss';
 
 class MozartPollingPeriodDropdown extends React.Component {
-  static defaultProps = {
-    pollingPeriod: '10',
-  };
-
   state = {
     isDropdownOpen: false,
   };

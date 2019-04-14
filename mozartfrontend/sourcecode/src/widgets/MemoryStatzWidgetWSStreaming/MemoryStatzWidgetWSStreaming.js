@@ -6,16 +6,16 @@ import { array } from 'prop-types';
 import MozartBox from '../../components/MozartBox';
 import MozartAreaChart from '../../components/MozartAreaChart';
 
-import { withLoader, withPolling } from '../../hocs';
-import { loadMemoryStatz as fetchData } from './actions/loadMemoryStatz.actions';
+import { withLoader, withWSStreams } from '../../hocs';
+import { streamMemoryStatz as fetchData } from './actions/loadMemoryStatz.actions';
 
 import { blueColorScheme as colors } from '../../constants/colorSchemes';
-import './MemoryStatzWidget.scss';
+import './MemoryStatzWidgetWSStreaming.scss';
 
-const MemoryStatzWidget = ({ data }) => (
+const MemoryStatzWidgetWSStreaming = ({ data }) => (
   <MozartBox>
     <MozartAreaChart
-      title="RAM Usage Widget (MB)"
+      title="RAM Usage Widget (MB) - WS Streaming"
       data={data}
       xKey="date"
       tooltipUnit="MB"
@@ -25,17 +25,17 @@ const MemoryStatzWidget = ({ data }) => (
   </MozartBox>
 );
 
-MemoryStatzWidget.propTypes = {
+MemoryStatzWidgetWSStreaming.propTypes = {
   data: array,
 };
 
-const mapStateToProps = ({ global = {}, memoryStatz = {} }) => ({
+const mapStateToProps = ({ global = {}, memoryStatzWSStreaming = {} }) => ({
   pollingPeriod: global.pollingPeriod,
   chartingPeriod: global.chartingPeriod,
-  changingChartingPeriod: memoryStatz.changingChartingPeriod,
-  data: memoryStatz.data,
-  isFetching: memoryStatz.isFetching,
-  isLoaded: memoryStatz.isLoaded,
+  changingChartingPeriod: memoryStatzWSStreaming.changingChartingPeriod,
+  data: memoryStatzWSStreaming.data,
+  isFetching: memoryStatzWSStreaming.isFetching,
+  isLoaded: memoryStatzWSStreaming.isLoaded,
 });
 
 export default compose(
@@ -44,5 +44,5 @@ export default compose(
     { fetchData }
   ),
   withLoader,
-  withPolling
-)(MemoryStatzWidget);
+  withWSStreams
+)(MemoryStatzWidgetWSStreaming);

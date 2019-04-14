@@ -1,7 +1,7 @@
 import {
-  LOAD_SYSTEM_AVERAGE_REQUEST,
-  LOAD_SYSTEM_AVERAGE_SUCCESS,
-  LOAD_SYSTEM_AVERAGE_ERROR,
+  LOAD_SYSTEM_AVERAGE_POLLING_REQUEST,
+  LOAD_SYSTEM_AVERAGE_POLLING_SUCCESS,
+  LOAD_SYSTEM_AVERAGE_POLLING_ERROR,
 } from '../constants';
 
 const initialState = {
@@ -12,14 +12,14 @@ const initialState = {
 const cpuSystemLoadAvg = (state = initialState, action) => {
   const { type } = action;
   switch (type) {
-    case LOAD_SYSTEM_AVERAGE_REQUEST:
+    case LOAD_SYSTEM_AVERAGE_POLLING_REQUEST:
       return {
         ...state,
         isFetching: true,
         isLoaded: false,
         changingChartingPeriod: action.changingChartingPeriod,
       };
-    case LOAD_SYSTEM_AVERAGE_SUCCESS:
+    case LOAD_SYSTEM_AVERAGE_POLLING_SUCCESS:
       return {
         ...state,
         isFetching: false,
@@ -27,7 +27,7 @@ const cpuSystemLoadAvg = (state = initialState, action) => {
         changingChartingPeriod: false,
         data: action.cpuLoadAvg,
       };
-    case LOAD_SYSTEM_AVERAGE_ERROR:
+    case LOAD_SYSTEM_AVERAGE_POLLING_ERROR:
       return {
         ...state,
         isFetching: false,
