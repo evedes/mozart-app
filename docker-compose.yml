@@ -2,11 +2,11 @@ version: '2.3'
 services:
   # mozart_frontend:
   # * PRODUCTION: docker-compose.override.yml
-  # * DEVELOPMET: docker-compose.develop.yml
+  # * DEVELOPMENT: docker-compose.develop.yml
   #
   # mozart_backend:
   # * PRODUCTION: docker-compose.override.yml
-  # * DEVELOPMET: docker-compose.develop.yml
+  # * DEVELOPMENT: docker-compose.develop.yml
   #
   mozart_mongodb:
     image: mongo:4.0.5
