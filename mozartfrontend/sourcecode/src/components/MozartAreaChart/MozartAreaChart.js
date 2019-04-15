@@ -83,6 +83,7 @@ class MozartAreaChart extends React.Component {
               .map((lineKey, i) => (
                 <Area
                   key={lineKey}
+                  isAnimationActive={false}
                   stroke={this.getStrokeColor(colors[i])}
                   activeDot={{
                     stroke: this.getStrokeColor(colors[i]),
