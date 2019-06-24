@@ -7,8 +7,6 @@
   Mozart Metrics is a self-contained docker web app that you can launch on a linux box / home server and that will collect metrics for you.
   You will have the possibility to create your own dashboards, charts and datatables to illustrate all the available system, devices and interfaces metrics and get visual awareness of what's happening *"under the hood"* of your system.
 
-  You can see it running here in my own [VEDDER BOX](http://vedder.ddns.net) which runs Ubuntu Server 18.04 LTS with docker.
-
   **Want to contribute? Check Item 07**
 
 ### 02. Why Mozart Metrics?
@@ -16,9 +14,9 @@
   For fun ❤️ and profit 🧠
 
   01. Because I love to see beautiful charts with metrics!
-  
+
   02. Because I loved to play with Grafana and challenged myself to do a simple clone of it.
-  
+
   03. Because I wanted to develop a sideproject to improve my github that is a bit outdated (since the times I've done freeCodeCamp).
 
   04. Because I wanted to learn more about setting a docker containerized web app and grok some basic knowledge about it.
@@ -26,10 +24,10 @@
 
 <img src='https://res.cloudinary.com/evedes/image/upload/v1553458721/mozart-app/Screen_Shot_2019-03-24_at_20.17.38.png' />
 
-  #### *SPOILER ALERT: This app is being developed as a side project so don't expect it to grow quickly.* 
+  #### *SPOILER ALERT: This app is being developed as a side project so don't expect it to grow quickly.*
 
-  Main goals: 
-    
+  Main goals:
+
     - collect system, devices and interfaces metrics
     - give the user the ability to create custom dashboards with point & click
     - give the user the ability to create charts with the data desired to be illustrated
@@ -37,7 +35,7 @@
 
 ### 03. How to build and run PROD environment (containerized)
 
-*NOTE: follow the build instructions 👇 if you only wanna see Mozart Metrics Up&Running* 
+*NOTE: follow the build instructions 👇 if you only wanna see Mozart Metrics Up&Running*
 
 Requirements: You'll need to have docker and docker-compose installed in your system.
 
@@ -113,6 +111,5 @@ Make sure you have mongod 4.0.5 running in your machine and that you tweak the .
       - To the infinity & beyond
 ...
 
---- 
+---
 evedes @2019
-	
