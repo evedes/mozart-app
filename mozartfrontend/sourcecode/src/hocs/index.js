@@ -53,7 +53,6 @@ export const withPolling = WrappedComponent =>
     static propTypes = {
       chartingPeriod: string,
       pollingPeriod: string,
-      connectionMode: string,
       fetchData: func,
     };
 

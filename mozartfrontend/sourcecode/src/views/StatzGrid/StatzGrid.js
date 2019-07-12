@@ -4,11 +4,8 @@ import { connect } from 'react-redux';
 import { func, string, bool } from 'prop-types';
 import MozartGridLayout from '../../components/MozartGridLayout';
 import StatzHeader from '../../widgets/StatzHeader';
-import NetworkInterfacesWidgetPolling from '../../widgets/NetworkInterfacesWidgetPolling';
 import NetworkInterfacesWidgetWSStreaming from '../../widgets/NetworkInterfacesWidgetWSStreaming';
-import SystemLoadAverageWidgetPolling from '../../widgets/SystemLoadAverageWidgetPolling';
 import SystemLoadAverageWidgetWSStreaming from '../../widgets/SystemLoadAverageWidgetWSStreaming';
-import MemoryStatzWidgetPolling from '../../widgets/MemoryStatzWidgetPolling';
 import ProcessesStatzWidget from '../../widgets/ProcessesStatzWidget';
 
 import './StatzGrid.scss';
@@ -16,27 +13,18 @@ import './StatzGrid.scss';
 import { defaultLayouts, rowHeight } from './gridDefaultConfig';
 import MemoryStatzWidgetWSStreaming from '../../widgets/MemoryStatzWidgetWSStreaming';
 
-const gridComponents = connectionMode => [
+const gridComponents = () => [
   { gridComponent: StatzHeader, key: 'StatzHeader' },
   {
-    gridComponent:
-      connectionMode === 'polling'
-        ? NetworkInterfacesWidgetPolling
-        : NetworkInterfacesWidgetWSStreaming,
+    gridComponent: NetworkInterfacesWidgetWSStreaming,
     key: 'NetworkInterfacesWidget',
   },
   {
-    gridComponent:
-      connectionMode === 'polling'
-        ? SystemLoadAverageWidgetPolling
-        : SystemLoadAverageWidgetWSStreaming,
+    gridComponent: SystemLoadAverageWidgetWSStreaming,
     key: 'SystemLoadAverageWidget',
   },
   {
-    gridComponent:
-      connectionMode === 'polling'
-        ? MemoryStatzWidgetPolling
-        : MemoryStatzWidgetWSStreaming,
+    gridComponent: MemoryStatzWidgetWSStreaming,
     key: 'MemoryStatzWidget',
   },
   { gridComponent: ProcessesStatzWidget, key: 'ProcessesStatzWidget' },
@@ -84,14 +72,14 @@ class StatzGrid extends React.Component {
   };
 
   render() {
-    const { currentBreakpoint, connectionMode } = this.props;
+    const { currentBreakpoint } = this.props;
     const { layouts } = this.state;
     return (
       <div className="StatzGrid">
         <MozartGridLayout
           {...dashboardConfig}
           layouts={layouts}
-          gridComponents={gridComponents(connectionMode)}
+          gridComponents={gridComponents()}
           getGridWidth={this.getGridWidth}
           currentBreakpoint={currentBreakpoint}
         />
@@ -104,12 +92,10 @@ StatzGrid.propTypes = {
   dispatch: func,
   currentBreakpoint: string,
   isDashboardLocked: bool,
-  connectionMode: string,
 };
 
 const mapStateToProps = ({ global = {} }) => ({
   isDashboardLocked: global.isDashboardLocked,
-  connectionMode: global.connectionMode,
 });
 
 export default connect(mapStateToProps)(StatzGrid);

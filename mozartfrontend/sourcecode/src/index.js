@@ -10,20 +10,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './libs/fontAwesomeLib';
 
 import mozartReducer from './reducers';
-import networkStatzPollingReducer from './widgets/NetworkInterfacesWidgetPolling/reducers';
 import networkStatzWSStreamingReducer from './widgets/NetworkInterfacesWidgetWSStreaming/reducers';
-import cpuSystemLoadAvgPollingReducer from './widgets/SystemLoadAverageWidgetPolling/reducers';
 import cpuSystemLoadAvgWSStreamingReducer from './widgets/SystemLoadAverageWidgetWSStreaming/reducers';
-import memoryStatzPollingReducer from './widgets/MemoryStatzWidgetPolling/reducers';
 import memoryStatzWSStreamingReducer from './widgets/MemoryStatzWidgetWSStreaming/reducers';
 
 const rootReducer = combineReducers({
   global: mozartReducer,
-  networkStatzPolling: networkStatzPollingReducer,
   networkStatzWSStreaming: networkStatzWSStreamingReducer,
-  cpuSystemLoadAvgPolling: cpuSystemLoadAvgPollingReducer,
   cpuSystemLoadAvgWSStreaming: cpuSystemLoadAvgWSStreamingReducer,
-  memoryStatzPolling: memoryStatzPollingReducer,
   memoryStatzWSStreaming: memoryStatzWSStreamingReducer,
 });
 
