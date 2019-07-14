@@ -11,11 +11,6 @@ import MozartPollingPeriodDropdown from '../MozartPollingPeriodDropdown';
 import './MozartHeader.scss';
 
 class MozartHeader extends React.Component {
-  getFontSize = () => {
-    const { currentBreakpoint } = this.props;
-    return currentBreakpoint === 'sm' ? '20px' : '35px';
-  };
-
   getLockIcon = () => {
     const { isDashboardLocked } = this.props;
     return isDashboardLocked ? 'lock' : 'unlock';
@@ -34,7 +29,6 @@ class MozartHeader extends React.Component {
         <div className="mx-3">
           <MozartImage imageName="mozart-logo" height="35" />
         </div>
-        <div style={{ fontSize: this.getFontSize() }}>MOZART METRICS</div>
         <div className="ml-auto">
           <Button
             color="dark"
