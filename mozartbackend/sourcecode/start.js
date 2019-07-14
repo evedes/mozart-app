@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const _ = require('lodash');
-const socket = require('socket.io');
+const socketIo = require('socket.io');
 const app = require('./app');
 const getNetworkStatz = require('./libs/getNetworkStatz');
 const getMemoryStatz = require('./libs/getMemoryStatz');
@@ -45,56 +44,74 @@ const server = app.listen(app.get('port'), () => {
 
 // INITIALIZE SOCKET CONNECTIONS
 
-const io = socket(server);
+const io = socketIo(server);
 // io.origins(['*:*']);
 
-io.on('connection', client => {
+let networkStatzInterval;
+let memoryStatzInterval;
+let cpuStatzInterval;
+
+io.on('connection', socket => {
   console.log(`🚀  Mozart_Backend API: Client Connected To WebSockets 💥`);
   console.log('------------------------------------------------------------\n');
-  client.on('subscribeToNetworkStatz', (chartingPeriod, pollingPeriod) => {
+  socket.on('disconnect', () => {
+    clearInterval(networkStatzInterval);
+    clearInterval(memoryStatzInterval);
+    clearInterval(cpuStatzInterval);
+  });
+  socket.on('subscribeToNetworkStatz', (chartingPeriod, pollingPeriod) => {
     // load initial data
     getNetworkStatz(networkStatz => {
-      client.emit('networkStatz', networkStatz);
+      socket.emit('networkStatz', networkStatz);
     }, chartingPeriod);
     // stream with interval
-    setInterval(() => {
+    if (networkStatzInterval) {
+      clearInterval(networkStatzInterval);
+    }
+    networkStatzInterval = setInterval(() => {
       getNetworkStatz(networkStatz => {
         console.log(
           '⏲️ WS Streams Period (NetworkStatz): ',
           pollingPeriod,
           '\n'
         );
-        client.emit('networkStatz', networkStatz);
+        socket.emit('networkStatz', networkStatz);
       }, chartingPeriod);
     }, pollingPeriod);
   });
-  client.on('subscribeToMemoryStatz', (chartingPeriod, pollingPeriod) => {
+  socket.on('subscribeToMemoryStatz', (chartingPeriod, pollingPeriod) => {
     // load initial data
     getMemoryStatz(memoryStatz => {
-      client.emit('memoryStatz', memoryStatz);
+      socket.emit('memoryStatz', memoryStatz);
     }, chartingPeriod);
     // stream with interval
-    setInterval(() => {
+    if (memoryStatzInterval) {
+      clearInterval(memoryStatzInterval);
+    }
+    memoryStatzInterval = setInterval(() => {
       getMemoryStatz(memoryStatz => {
         console.log(
           '⏲️ WS Streams Period (MemoryStatz): ',
           pollingPeriod,
           '\n'
         );
-        client.emit('memoryStatz', memoryStatz);
+        socket.emit('memoryStatz', memoryStatz);
       }, chartingPeriod);
     }, pollingPeriod);
   });
-  client.on('subscribeToCpuStatz', (chartingPeriod, pollingPeriod) => {
+  socket.on('subscribeToCpuStatz', (chartingPeriod, pollingPeriod) => {
     // load initial data
     getCpuStatz(cpuStatz => {
-      client.emit('cpuStatz', cpuStatz);
+      socket.emit('cpuStatz', cpuStatz);
     }, chartingPeriod);
     // stream with interval
-    setInterval(() => {
+    if (cpuStatzInterval) {
+      clearInterval(cpuStatzInterval);
+    }
+    cpuStatzInterval = setInterval(() => {
       getCpuStatz(cpuStatz => {
         console.log('⏲️ WS Streams Period (CpuStatz): ', pollingPeriod, '\n');
-        client.emit('cpuStatz', cpuStatz);
+        socket.emit('cpuStatz', cpuStatz);
       }, chartingPeriod);
     }, pollingPeriod);
   });

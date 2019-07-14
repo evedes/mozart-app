@@ -23,6 +23,7 @@ export const withWSStreams = WrappedComponent =>
       chartingPeriod: string,
       pollingPeriod: string,
       fetchData: func,
+      unsubscribe: func,
       changingChartingPeriod: bool,
     };
 
