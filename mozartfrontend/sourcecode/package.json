@@ -78,6 +78,6 @@
     "@babel/core": "^7.4.0",
     "babel-loader": "^8.0.5"
   },
-  "proxy": "http://mozart_backend",
+  "proxy": "http://mozart_backend:3001",
   "homepage": "./"
 }
